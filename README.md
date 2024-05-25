@@ -1,6 +1,8 @@
 # Food Mod
-This is a simple food mod for forge 1.20.1
+
 ![Pog Pizza](/resources/image.png)
+
+This is a simple food mod for forge 1.20.1
 ### Features
 - Plain Pizza
   - Can be placed in world, like a cake  
