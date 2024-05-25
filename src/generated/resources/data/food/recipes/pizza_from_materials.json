@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "food:dough"
+    },
+    {
+      "item": "food:tomato"
+    },
+    {
+      "item": "food:cheese"
+    }
+  ],
+  "result": {
+    "item": "food:pizza_block"
+  }
+}
