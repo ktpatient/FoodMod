@@ -23,6 +23,7 @@ public class ItemModelGenerator extends ItemModelProvider {
         generateItemModel("pizza_slice");
         generateItemModel("pizza_block","pizza");
         generateBlockParentModel("pot_block", "pot");
+        generateBlockParentModel("chopping_board", "chopping_board");
         generateItemParentModel("milk_fluid_bucket", "milk_bucket", "minecraft");
     }
     private void generateItemModel(String name){

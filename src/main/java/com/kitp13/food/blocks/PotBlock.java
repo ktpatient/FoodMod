@@ -1,10 +1,6 @@
 package com.kitp13.food.blocks;
 
-import com.kitp13.food.Main;
 import com.kitp13.food.entity.blocks.PotBlockEntity;
-import com.kitp13.food.fluid.ModFluids;
-import com.kitp13.food.items.ModItems;
-import com.kitp13.food.utils.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -22,9 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEventListener;
-import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -34,10 +28,14 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 import static com.kitp13.food.entity.blocks.PotBlockEntity.getResourceLocation;
 
+@SuppressWarnings("deprecation")
 public class PotBlock extends Block implements EntityBlock {
     public PotBlock(){
         super(BlockBehaviour.Properties.copy(Blocks.CAKE).sound(SoundType.METAL));
@@ -57,17 +55,16 @@ public class PotBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState p_60550_) {
+    public @NotNull RenderShape getRenderShape(@NotNull BlockState p_60550_) {
         return RenderShape.MODEL;
     }
-
     @Override
-    public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) {
+    public @NotNull VoxelShape getShape(@NotNull BlockState p_60555_, @NotNull BlockGetter p_60556_, @NotNull BlockPos p_60557_, @NotNull CollisionContext p_60558_) {
         return SHAPE;
     }
 
     @Override
-    public InteractionResult use(BlockState p_60503_, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult p_60508_) {
+    public @NotNull InteractionResult use(@NotNull BlockState p_60503_, Level level, @NotNull BlockPos blockPos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult p_60508_) {
         //if (!level.isClientSide){
             BlockEntity be = level.getBlockEntity(blockPos);
             if (be instanceof PotBlockEntity blockEntity) {
@@ -85,7 +82,7 @@ public class PotBlock extends Block implements EntityBlock {
                         }
                     }
                     if (stack.equals(Items.MILK_BUCKET.getDefaultInstance(), false)){
-                        int filled = tank.fill(new FluidStack(ForgeRegistries.FLUIDS.getValue(getResourceLocation("food:milk_fluid")),1000), IFluidHandler.FluidAction.EXECUTE);
+                        int filled = tank.fill(new FluidStack(Objects.requireNonNull(ForgeRegistries.FLUIDS.getValue(getResourceLocation("food:milk_fluid"))),1000), IFluidHandler.FluidAction.EXECUTE);
                         if (filled!=0){
                             player.setItemInHand(hand, Items.BUCKET.getDefaultInstance());
                             player.getInventory().setChanged();
@@ -107,23 +104,23 @@ public class PotBlock extends Block implements EntityBlock {
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+    public BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
         return new PotBlockEntity(blockPos, blockState);
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_153212_, BlockState p_153213_, BlockEntityType<T> p_153214_) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level p_153212_, @NotNull BlockState p_153213_, @NotNull BlockEntityType<T> p_153214_) {
         return EntityBlock.super.getTicker(p_153212_, p_153213_, p_153214_);
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> GameEventListener getListener(ServerLevel p_221121_, T p_221122_) {
+    public <T extends BlockEntity> GameEventListener getListener(@NotNull ServerLevel p_221121_, @NotNull T p_221122_) {
         return EntityBlock.super.getListener(p_221121_, p_221122_);
     }
     @Override
-    public void fallOn(Level level, BlockState blockState, BlockPos blockPos, Entity entity, float p_152430_) {
+    public void fallOn(Level level, @NotNull BlockState blockState, @NotNull BlockPos blockPos, @NotNull Entity entity, float p_152430_) {
             BlockEntity be = level.getBlockEntity(blockPos);
             if (be instanceof PotBlockEntity blockEntity){
                 if (blockEntity.getFluidAmount()>=1000){
@@ -131,11 +128,5 @@ public class PotBlock extends Block implements EntityBlock {
                 }
             }
 
-    }
-
-    @Override
-    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-        ItemUtils.spawnItemOnGround(level,pos,new ItemStack(ModBlocks.POT_BLOCK_ITEM.get()));
-        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
     }
 }

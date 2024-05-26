@@ -1,7 +1,6 @@
 package com.kitp13.food.datagen;
 
 import com.kitp13.food.blocks.ModBlocks;
-import com.kitp13.food.blocks.crops.BaseCropBlock;
 import com.kitp13.food.blocks.crops.PineappleCropBlock;
 import com.kitp13.food.blocks.crops.TomatoCropBlock;
 import com.kitp13.food.items.ModItems;
@@ -15,15 +14,11 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootPoolEntry;
-import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
-import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +32,8 @@ public class BlockLootTables extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
+        this.dropSelf(ModBlocks.CHOPPING_BOARD_BLOCK.get());
+        this.dropSelf(ModBlocks.POT_BLOCK.get());
         createPlantLootTable(ModBlocks.TOMATO_CROP_BLOCK.get(), ModItems.TOMATO_SEEDS.get(),
                 ModItems.TOMATO_FRUIT.get(), TomatoCropBlock.AGE,TomatoCropBlock.MAX_AGE);
         createPlantLootTable(ModBlocks.PINEAPPLE_CROP_BLOCK.get(), ModItems.PINEAPPLE_SEEDS.get(),
@@ -44,10 +41,12 @@ public class BlockLootTables extends BlockLootSubProvider {
     }
 
     @Override
-    protected Iterable<Block> getKnownBlocks() {
+    protected @NotNull Iterable<Block> getKnownBlocks() {
         List<Block> blocks = new ArrayList<>();
         blocks.add(ModBlocks.TOMATO_CROP_BLOCK.get());
         blocks.add(ModBlocks.PINEAPPLE_CROP_BLOCK.get());
+        blocks.add(ModBlocks.POT_BLOCK.get());
+        blocks.add(ModBlocks.CHOPPING_BOARD_BLOCK.get());
         return blocks;
     }
     private void createPlantLootTable(Block cropBlock, Item seed, Item fruit, IntegerProperty integerProperty, int maxAge){
@@ -58,7 +57,7 @@ public class BlockLootTables extends BlockLootSubProvider {
                 ,seed, lootItemConditionBuilder));
     }
 
-    protected LootTable.Builder createCropDrops(Block block, Item fruitItem, Item seedItem, LootItemCondition.Builder conditionBuilder) {
+    protected LootTable.@NotNull Builder createCropDrops(@NotNull Block block, @NotNull Item fruitItem, @NotNull Item seedItem, LootItemCondition.@NotNull Builder conditionBuilder) {
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(2))
