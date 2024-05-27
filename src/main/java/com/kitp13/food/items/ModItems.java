@@ -16,6 +16,7 @@ public class ModItems {
     public static RegistryObject<Item> TOMATO_FRUIT = ITEMS.register("tomato",      () -> new FoodItem(new Item.Properties(),4,0.3f));
     public static RegistryObject<Item> CHEESE_SLICE = ITEMS.register("cheese",      () -> new FoodItem(new Item.Properties(),4,0.3f));
     public static RegistryObject<Item> PIZZA_SLICE  = ITEMS.register("pizza_slice", () -> new FoodItem(new Item.Properties(),4,0.3f));
+    public static RegistryObject<Item> PINEAPPLE_PIZZA_SLICE  = ITEMS.register("pineapple_pizza_slice", () -> new FoodItem(new Item.Properties(),4,0.3f));
     public static RegistryObject<Item> PINEAPPLE    = ITEMS.register("pineapple",   () -> new FoodItem(new Item.Properties(),4,0.3f));
 
     // Seeds

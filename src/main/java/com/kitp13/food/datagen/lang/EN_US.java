@@ -17,6 +17,7 @@ public class EN_US extends LanguageProvider {
     protected void addTranslations() {
         add(ModItems.CHEESE_SLICE, "Cheese Slice");
         add(ModItems.PIZZA_SLICE, "Pizza Slice");
+        add(ModItems.PINEAPPLE_PIZZA_SLICE, "Pineapple Pizza Slice");
         add(ModItems.DOUGH, "Dough");
         add(ModItems.TOMATO_FRUIT, "Tomato");
         add(ModItems.TOMATO_SEEDS, "Tomato Seeds");

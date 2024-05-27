@@ -1,10 +1,10 @@
 {
   "variants": {
-    "size=1": { "model":  "food:block/pizza_block1"},
-    "size=2": { "model":  "food:block/pizza_block2"},
-    "size=3": { "model":  "food:block/pizza_block3"},
-    "size=4": { "model":  "food:block/pizza_block4"},
-    "size=5": { "model":  "food:block/pizza_block5"},
-    "size=6": { "model":  "food:block/pizza_block6"}
+    "size=1": { "model":  "food:block/pineapple_pizza_block1"},
+    "size=2": { "model":  "food:block/pineapple_pizza_block2"},
+    "size=3": { "model":  "food:block/pineapple_pizza_block3"},
+    "size=4": { "model":  "food:block/pineapple_pizza_block4"},
+    "size=5": { "model":  "food:block/pineapple_pizza_block5"},
+    "size=6": { "model":  "food:block/pineapple_pizza_block6"}
   }
 }
