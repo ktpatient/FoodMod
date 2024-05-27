@@ -1,8 +1,14 @@
 package com.kitp13.food.library.blocks;
 
+import com.kitp13.food.library.FoodUtils;
+import com.kitp13.food.library.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -15,11 +21,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEventListener;
+import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
-public class PlaceableFoodBlock extends Block implements EntityBlock {
+public abstract class PlaceableFoodBlock extends Block implements EntityBlock {
     public static final int MAX_SIZE = 6;
     public static final IntegerProperty SIZE = IntegerProperty.create("size", 1,MAX_SIZE);
 
@@ -75,5 +82,27 @@ public class PlaceableFoodBlock extends Block implements EntityBlock {
         } else {
             level.setBlock(pos, Blocks.AIR.defaultBlockState(), 0);
         }
+    }
+
+    public void feedPlayer(Player player) {
+        FoodUtils.FeedPlayer(player, getSliceNutritionValue(), getSliceSaturationValue());
+    }
+
+    public float getSliceSaturationValue(){
+        return 1;
+    }
+
+    public int getSliceNutritionValue(){
+        return 1;
+    }
+    public ItemLike getSliceItem(){
+        return Items.STONE;
+    }
+    @Override
+    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+        for (int i = 0; i<getSize(state); i++){
+            ItemUtils.spawnItemAtBlock(level, pos, new ItemStack(getSliceItem()));
+        }
+        return super.onDestroyedByPlayer(state,level,pos,player,willHarvest,fluid);
     }
 }
