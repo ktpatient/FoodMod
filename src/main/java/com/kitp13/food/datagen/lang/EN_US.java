@@ -24,6 +24,7 @@ public class EN_US extends LanguageProvider {
         add(ModItems.PINEAPPLE_SEEDS, "Pineapple Seeds");
 
         addBlock(ModBlocks.PIZZA_BLOCK_ITEM, "Pizza");
+        addBlock(ModBlocks.PINEAPPLE_PIZZA_BLOCK_ITEM, "Pineapple Pizza");
         addBlock(ModBlocks.POT_BLOCK_ITEM, "Curding Pot");
 
     }

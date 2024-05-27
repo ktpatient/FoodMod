@@ -22,6 +22,7 @@ public class ItemModelGenerator extends ItemModelProvider {
         generateItemModel("tomato");
         generateItemModel("pizza_slice");
         generateItemModel("pizza_block","pizza");
+        generateItemModel("pineapple_pizza_block", "pizza");
         generateBlockParentModel("pot_block", "pot");
         generateBlockParentModel("chopping_board", "chopping_board");
         generateItemParentModel("milk_fluid_bucket", "milk_bucket", "minecraft");

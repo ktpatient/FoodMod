@@ -4,6 +4,8 @@ import com.kitp13.food.library.FoodUtils;
 import com.kitp13.food.library.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -22,6 +24,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEventListener;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -104,5 +107,17 @@ public abstract class PlaceableFoodBlock extends Block implements EntityBlock {
             ItemUtils.spawnItemAtBlock(level, pos, new ItemStack(getSliceItem()));
         }
         return super.onDestroyedByPlayer(state,level,pos,player,willHarvest,fluid);
+    }
+
+    @Override
+    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand p_60507_, @NotNull BlockHitResult p_60508_) {
+        decrementState(level, pos, state);
+        FoodUtils.PlayEatingSound(level,pos);
+        feedPlayer(player);
+        afterEatenSlice(player);
+        return InteractionResult.SUCCESS;
+    }
+    public void afterEatenSlice(Player player){
+        return;
     }
 }
