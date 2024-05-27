@@ -20,6 +20,7 @@ public class ItemModelGenerator extends ItemModelProvider {
         generateItemModel("pineapple_seeds");
         generateItemModel("tomato_seeds");
         generateItemModel("tomato");
+        generateItemModel("cake_bite");
         generateItemModel("pizza_slice");
         generateItemModel("pineapple_pizza_slice");
         generateItemModel("pizza_block","pizza");

@@ -16,6 +16,7 @@ public class EN_US extends LanguageProvider {
     @Override
     protected void addTranslations() {
         add(ModItems.CHEESE_SLICE, "Cheese Slice");
+        add(ModItems.CAKE_BITE, "Cake Bite");
         add(ModItems.PIZZA_SLICE, "Pizza Slice");
         add(ModItems.PINEAPPLE_PIZZA_SLICE, "Pineapple Pizza Slice");
         add(ModItems.DOUGH, "Dough");
