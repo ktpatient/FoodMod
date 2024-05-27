@@ -2,6 +2,7 @@ package com.kitp13.food.blocks;
 
 import com.kitp13.food.entity.blocks.ChoppingBoardEntity;
 import com.kitp13.food.library.ItemUtils;
+import com.kitp13.food.shapes.BlockVoxelShapes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -14,9 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,16 +23,10 @@ import java.util.Objects;
 
 @SuppressWarnings("deprecation")
 public class ChoppingBoard extends BaseEntityBlock {
-    public static final VoxelShape SHAPE = makeShape();
+
     protected ChoppingBoard(Properties p_49224_) {
         super(p_49224_);
     }
-    public static VoxelShape makeShape(){
-        VoxelShape shape = Shapes.empty();
-        shape = Shapes.join(shape, Shapes.box(0.125, 0, 0.125, 0.875, 0.125, 0.875), BooleanOp.OR);
-        return shape;
-    }
-
 
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
@@ -42,7 +35,7 @@ public class ChoppingBoard extends BaseEntityBlock {
 
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState p_60555_, @NotNull BlockGetter p_60556_, @NotNull BlockPos p_60557_, @NotNull CollisionContext p_60558_) {
-        return SHAPE;
+        return BlockVoxelShapes.CHOPPING_BOARD_SHAPE;
     }
 
     @Override

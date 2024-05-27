@@ -1,6 +1,7 @@
 package com.kitp13.food.blocks;
 
 import com.kitp13.food.entity.blocks.PotBlockEntity;
+import com.kitp13.food.shapes.BlockVoxelShapes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -19,9 +20,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEventListener;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
@@ -40,19 +39,6 @@ public class PotBlock extends Block implements EntityBlock {
     public PotBlock(){
         super(BlockBehaviour.Properties.copy(Blocks.CAKE).sound(SoundType.METAL));
     }
-    public static final VoxelShape SHAPE = makeShape();
-
-
-
-    public static VoxelShape makeShape(){
-        VoxelShape shape = Shapes.empty();
-        shape = Shapes.join(shape, Shapes.box(0, 0, 0, 1, 0.125, 1), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0, 0.125, 0, 1, 0.375, 0.125), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0, 0.125, 0.125, 0.125, 0.375, 0.875), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.875, 0.125, 0.125, 1, 0.375, 0.875), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0, 0.125, 0.875, 1, 0.375, 1), BooleanOp.OR);
-        return shape;
-    }
 
     @Override
     public @NotNull RenderShape getRenderShape(@NotNull BlockState p_60550_) {
@@ -60,7 +46,7 @@ public class PotBlock extends Block implements EntityBlock {
     }
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState p_60555_, @NotNull BlockGetter p_60556_, @NotNull BlockPos p_60557_, @NotNull CollisionContext p_60558_) {
-        return SHAPE;
+        return BlockVoxelShapes.POT_BLOCK_SHAPE;
     }
 
     @Override
