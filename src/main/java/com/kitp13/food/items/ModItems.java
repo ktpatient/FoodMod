@@ -18,6 +18,7 @@ public class ModItems {
     public static RegistryObject<Item> PIZZA_SLICE           = ITEMS.register("pizza_slice",           () -> new FoodItem(new Item.Properties(),4,0.3f));
     public static RegistryObject<Item> PINEAPPLE_PIZZA_SLICE = ITEMS.register("pineapple_pizza_slice", () -> new FoodItem(new Item.Properties(),4,0.3f));
     public static RegistryObject<Item> PINEAPPLE             = ITEMS.register("pineapple",             () -> new FoodItem(new Item.Properties(),4,0.3f));
+    // TODO make the cake bite drop when you break a cake. The amount determined by the remaining bites.
     public static RegistryObject<Item> CAKE_BITE             = ITEMS.register("cake_bite",             () -> new FoodItem(new Item.Properties(),4,0.3f));
 
     // Seeds
