@@ -1,6 +1,7 @@
 package com.kitp13.food.entity.blocks;
 
 import com.kitp13.food.blocks.ModBlocks;
+import com.kitp13.food.library.entity.block.SyncableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -13,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class ChoppingBoardEntity extends BlockEntity implements SyncableBlockEntity{
+public class ChoppingBoardEntity extends BlockEntity implements SyncableBlockEntity {
     public final ItemStackHandler itemStackHandler = new ItemStackHandler(1){
         @Override
         protected void onContentsChanged(int slot) {

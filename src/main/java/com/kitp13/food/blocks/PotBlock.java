@@ -124,7 +124,7 @@ public class PotBlock extends Block implements EntityBlock {
             BlockEntity be = level.getBlockEntity(blockPos);
             if (be instanceof PotBlockEntity blockEntity){
                 if (blockEntity.getFluidAmount()>=1000){
-                    blockEntity.incrementJumpCount(level,blockPos,entity);
+                    blockEntity.incrementJumpCount(level,blockPos);
                 }
             }
 

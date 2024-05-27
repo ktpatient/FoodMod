@@ -1,4 +1,4 @@
-package com.kitp13.food.entity.blocks;
+package com.kitp13.food.library.entity.block;
 
 import net.minecraft.nbt.CompoundTag;
 

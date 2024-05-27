@@ -1,4 +1,4 @@
-package com.kitp13.food.blocks.crops;
+package com.kitp13.food.library.blocks.crops;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CropBlock;
@@ -12,7 +12,7 @@ public class BaseCropBlock extends CropBlock {
     public static final int MAX_AGE = 7;
     public static final IntegerProperty AGE = BlockStateProperties.AGE_7;
     public BaseCropBlock(Properties properties){
-        super(properties);
+        super(properties.noOcclusion().noCollission());
     }
 
     @Override

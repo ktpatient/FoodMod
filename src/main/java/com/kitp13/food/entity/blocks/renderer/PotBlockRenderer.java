@@ -1,8 +1,6 @@
 package com.kitp13.food.entity.blocks.renderer;
 
 
-import com.kitp13.food.Main;
-import com.kitp13.food.blocks.PotBlock;
 import com.kitp13.food.entity.blocks.PotBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -13,35 +11,35 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.core.Direction;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 import static com.kitp13.food.entity.blocks.PotBlockEntity.getResourceLocation;
 
-
+@SuppressWarnings("deprecation")
 public class PotBlockRenderer implements BlockEntityRenderer<PotBlockEntity>  {
-    private static final float SIDE_MARGIN = (float) PotBlock.SHAPE.min(Direction.Axis.X) + 0.1f,
-            MIN_Y = 2.1f / 16f,
-            MAX_Y = 0.4f - MIN_Y;
+
     public PotBlockRenderer(BlockEntityRendererProvider.Context context) {
     }
 
     @Override
-    public void render(PotBlockEntity blockEntity, float v, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int i1) {
+    public void render(PotBlockEntity blockEntity, float v, @NotNull PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int i, int i1) {
         //Main.LOGGER.info("RENDER!!!!");
         // Main.LOGGER.info(blockEntity.getTank().getFluidAmount());
         if (blockEntity.getFluidAmount() == 0){
             return;
         }
-        FluidStack fluidStack = new FluidStack(ForgeRegistries.FLUIDS.getValue(getResourceLocation("food:milk_fluid")),1000);
+        FluidStack fluidStack = new FluidStack(Objects.requireNonNull(ForgeRegistries.FLUIDS.getValue(getResourceLocation("food:milk_fluid"))),1000);
         //
-        renderQuad(poseStack, multiBufferSource, fluidStack, i, i1);
+        renderQuad(poseStack, multiBufferSource, fluidStack, i);
     }
 
 
-    private static void renderQuad(PoseStack matrixStack, MultiBufferSource buffer, FluidStack fluidStack, int combinedLight, int combinedOverlay) {
+    private static void renderQuad(PoseStack matrixStack, MultiBufferSource buffer, FluidStack fluidStack, int combinedLight) {
         // Define vertices for a simple quad
         IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(fluidStack.getFluid());
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(fluidTypeExtensions.getStillTexture(fluidStack));        VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.solid());

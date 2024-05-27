@@ -3,7 +3,6 @@ package com.kitp13.food.entity.blocks;
 import com.kitp13.food.blocks.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class PizzaBlockTileEntity extends BlockEntity {

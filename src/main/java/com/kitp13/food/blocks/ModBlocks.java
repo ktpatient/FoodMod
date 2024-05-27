@@ -25,8 +25,8 @@ public class ModBlocks {
     public static final RegistryObject<Block> PIZZA_BLOCK = BLOCKS.register("pizza_block", PizzaBlock::new);
     public static final RegistryObject<BlockItem> PIZZA_BLOCK_ITEM = ITEM_BLOCKS.register("pizza_block", ()->new BlockItem(PIZZA_BLOCK.get(), new Item.Properties()));
 
-    public static final RegistryObject<Block> TOMATO_CROP_BLOCK = BLOCKS.register("tomato_crop_block", ()->new TomatoCropBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT).noOcclusion().noCollission()));
-    public static final RegistryObject<Block> PINEAPPLE_CROP_BLOCK = BLOCKS.register("pineapple_crop_block", ()->new PineappleCropBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT).noOcclusion().noCollission()));
+    public static final RegistryObject<Block> TOMATO_CROP_BLOCK = BLOCKS.register("tomato_crop_block", ()->new TomatoCropBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT)));
+    public static final RegistryObject<Block> PINEAPPLE_CROP_BLOCK = BLOCKS.register("pineapple_crop_block", ()->new PineappleCropBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT)));
 
 
     public static final RegistryObject<BlockEntityType<PotBlockEntity>> POT_TILE_ENTITY = BLOCK_ENTITY.register("pot_be", ()->BlockEntityType.Builder.of(PotBlockEntity::new, ModBlocks.POT_BLOCK.get()).build(null));

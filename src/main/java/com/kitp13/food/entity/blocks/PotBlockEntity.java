@@ -2,19 +2,17 @@ package com.kitp13.food.entity.blocks;
 
 import com.kitp13.food.blocks.ModBlocks;
 import com.kitp13.food.items.ModItems;
-import com.kitp13.food.utils.ItemUtils;
+import com.kitp13.food.library.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.IFluidTank;
@@ -28,11 +26,9 @@ public class PotBlockEntity extends BlockEntity implements IFluidTank {
         return new ResourceLocation(str.substring(0, str.indexOf(":")), str.substring(str.indexOf(":") + 1));
     }
 
-    private int ticks;
     protected FluidTank tank;
     public Fluid fluidActual;
     public int jumpCount = 0;
-    private final LazyOptional<IFluidHandler> holder = LazyOptional.of(()->tank);
     public PotBlockEntity(BlockPos pos, BlockState state){
         super(ModBlocks.POT_TILE_ENTITY.get(), pos, state);
         fluidActual = ForgeRegistries.FLUIDS.getValue(getResourceLocation("food:milk_fluid"));
@@ -62,6 +58,7 @@ public class PotBlockEntity extends BlockEntity implements IFluidTank {
     @Override
     public int fill(FluidStack fluidStack, IFluidHandler.FluidAction fluidAction) {
         if (tank.getCapacity() - tank.getFluidAmount() != 0) {
+            assert level != null;
             if ((tank.getCapacity() - tank.getFluidAmount()) > fluidStack.getAmount()) {
                 level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
                 return (tank.getCapacity() - tank.getFluidAmount()) - fluidStack.getAmount();
@@ -84,6 +81,7 @@ public class PotBlockEntity extends BlockEntity implements IFluidTank {
         FluidStack stack = new FluidStack(tank.getFluid(), drained);
         if (fluidAction.execute() && drained > 0) {
             tank.getFluid().shrink(drained);
+            assert level != null;
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
         }
         return stack;
@@ -103,29 +101,29 @@ public class PotBlockEntity extends BlockEntity implements IFluidTank {
     }
 
     @Override
-    public void load(CompoundTag tag) {
+    public void load(@NotNull CompoundTag tag) {
         super.load(tag);
         this.tank.readFromNBT(tag.getCompound("Tank"));
         this.jumpCount = tag.getInt("JumpCount");
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
+    protected void saveAdditional(@NotNull CompoundTag tag) {
         super.saveAdditional(tag);
         tag.put("Tank", this.tank.writeToNBT(new CompoundTag()));
         tag.putInt("JumpCount", this.jumpCount);
     }
-    public void incrementJumpCount(Level level, BlockPos pos, Entity entity) {
+    public void incrementJumpCount(Level level, BlockPos pos) {
         level.playLocalSound(pos, SoundEvents.SLIME_DEATH, SoundSource.BLOCKS, 1.0f, 1.0f, true);
         jumpCount++;
         if (jumpCount >= 2) {
-            recipeSuccess(level, pos,entity);
+            recipeSuccess(level, pos);
             jumpCount = 0;
         }
         setChanged();
     }
-    private void recipeSuccess(Level level, BlockPos pos, Entity entity){
+    private void recipeSuccess(Level level, BlockPos pos){
         tank.drain(1000, IFluidHandler.FluidAction.EXECUTE);
-        ItemUtils.spawnItemOnGround(level, pos, new ItemStack(ModItems.CHEESE_SLICE.get()));
+        ItemUtils.spawnItemAtBlock(level, pos, new ItemStack(ModItems.CHEESE_SLICE.get()));
     }
 }

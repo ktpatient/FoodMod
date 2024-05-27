@@ -2,11 +2,10 @@ package com.kitp13.food.datagen;
 
 import com.kitp13.food.Main;
 import com.kitp13.food.blocks.ModBlocks;
-import com.kitp13.food.blocks.crops.BaseCropBlock;
+import com.kitp13.food.library.blocks.crops.BaseCropBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
