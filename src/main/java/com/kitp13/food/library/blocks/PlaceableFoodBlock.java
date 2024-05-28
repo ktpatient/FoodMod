@@ -112,12 +112,15 @@ public abstract class PlaceableFoodBlock extends Block implements EntityBlock {
     @Override
     public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand p_60507_, @NotNull BlockHitResult p_60508_) {
         decrementState(level, pos, state);
-        FoodUtils.PlayEatingSound(level,pos);
+        beforeEatenSlice(player);
         feedPlayer(player);
+        playEatingSound(level,pos);
         afterEatenSlice(player);
         return InteractionResult.SUCCESS;
     }
-    public void afterEatenSlice(Player player){
-        return;
+    public void beforeEatenSlice(Player player){ }
+    public void afterEatenSlice(Player player){ }
+    public void playEatingSound(Level level, BlockPos pos){
+        FoodUtils.PlayEatingSound(level,pos);
     }
 }
