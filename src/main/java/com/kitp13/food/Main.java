@@ -5,6 +5,7 @@ import com.kitp13.food.entity.blocks.renderer.ChoppingBoardRenderer;
 import com.kitp13.food.entity.blocks.renderer.PotBlockRenderer;
 import com.kitp13.food.fluid.ModFluids;
 import com.kitp13.food.items.ModItems;
+import com.kitp13.food.tab.FoodTab;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -26,6 +27,7 @@ public class Main {
         ModBlocks.BLOCKS.register(bus);
         ModBlocks.BLOCK_ENTITY.register(bus);
         ModBlocks.ITEM_BLOCKS.register(bus);
+        FoodTab.TABS.register(bus);
     }
     private void renderEvent(EntityRenderersEvent.RegisterRenderers event){
         event.registerBlockEntityRenderer(ModBlocks.POT_TILE_ENTITY.get(), PotBlockRenderer::new);

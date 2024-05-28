@@ -12,6 +12,5 @@ public class FoodUtils {
     }
     public static void FeedPlayer(Player player, int nutrition, float saturation){
         player.getFoodData().eat(nutrition,saturation);
-
     }
 }

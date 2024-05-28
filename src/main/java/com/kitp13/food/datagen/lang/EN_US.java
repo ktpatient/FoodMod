@@ -1,5 +1,6 @@
 package com.kitp13.food.datagen.lang;
 
+import com.kitp13.food.Main;
 import com.kitp13.food.blocks.ModBlocks;
 import com.kitp13.food.items.ModItems;
 import net.minecraft.data.PackOutput;
@@ -15,6 +16,8 @@ public class EN_US extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
+        add("item_group_"+ Main.MODID, "Food");
+
         add(ModItems.CHEESE_SLICE, "Cheese Slice");
         add(ModItems.CAKE_BITE, "Cake Bite");
         add(ModItems.PIZZA_SLICE, "Pizza Slice");

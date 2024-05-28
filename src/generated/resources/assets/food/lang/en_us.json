@@ -11,5 +11,6 @@
   "item.food.pineapple_seeds": "Pineapple Seeds",
   "item.food.pizza_slice": "Pizza Slice",
   "item.food.tomato": "Tomato",
-  "item.food.tomato_seeds": "Tomato Seeds"
+  "item.food.tomato_seeds": "Tomato Seeds",
+  "item_group_food": "Food"
 }
