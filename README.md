@@ -4,8 +4,10 @@
 
 This is a simple food mod for forge 1.20.1
 ### Features
+- Expandable way of making Placeable food, used to make Pizza blocks easier to make, includes ways to add effects when eaten
 - Plain Pizza
-  - Can be placed in world, like a cake  
+- Pineapple Pizza
+  - Be careful when eating 
 - Tomato Plant
   - Normal Crop , Placed On Farmland 
 - Pineapple Plant
@@ -17,8 +19,7 @@ This is a simple food mod for forge 1.20.1
 
 
 ### Planned Features
-- Different types of Pizza
-  - Hawaiian (Ham & Pineapple)
+- Add berry bushes to get different berries, akin to [Natura](https://www.curseforge.com/minecraft/mc-mods/natura)
 - Add tools to produce more materials
   - E.g. Grated Cheese
   - Jump on Tomatoes, to make Tomato sauce?
