@@ -28,6 +28,7 @@ public class EN_US extends LanguageProvider {
         addBlock(ModBlocks.PIZZA_BLOCK_ITEM, "Pizza");
         addBlock(ModBlocks.PINEAPPLE_PIZZA_BLOCK_ITEM, "Pineapple Pizza");
         addBlock(ModBlocks.POT_BLOCK_ITEM, "Curding Pot");
+        addBlock(ModBlocks.CHOPPING_BOARD_BLOCK_ITEM, "Chopping Board");
 
     }
     private void addBlock(RegistryObject<BlockItem> item, String translation){
