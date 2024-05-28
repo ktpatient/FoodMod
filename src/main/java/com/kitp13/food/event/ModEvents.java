@@ -2,16 +2,19 @@ package com.kitp13.food.event;
 
 import com.kitp13.food.Main;
 import com.kitp13.food.items.ModItems;
+import com.kitp13.food.library.ItemUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import java.util.List;
 
@@ -33,6 +36,15 @@ public class ModEvents {
                new ItemStack(Items.EMERALD,2),
                10,10,0.05f
             ));
+        }
+    }
+    @SubscribeEvent
+    public static void breakEvent(BlockEvent.BreakEvent event){
+        if (event.getState().is(Blocks.CAKE)){
+            int slicesRemaining = 7 - event.getState().getValue(BlockStateProperties.BITES);
+            for (int i = 0; i < slicesRemaining; i++) {
+                ItemUtils.spawnItemAtBlock(event.getPlayer().level(), event.getPos(),new ItemStack(ModItems.CAKE_BITE.get()));
+            }
         }
     }
 }
