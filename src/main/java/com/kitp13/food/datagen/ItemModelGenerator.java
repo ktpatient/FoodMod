@@ -15,6 +15,7 @@ public class ItemModelGenerator extends ItemModelProvider {
     @Override
     protected void registerModels() {
         generateItemModel("cheese" );
+        generateItemModel("strawberry");
         generateItemModel("dough");
         generateItemModel("pineapple");
         generateItemModel("pineapple_seeds");

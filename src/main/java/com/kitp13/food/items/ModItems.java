@@ -19,6 +19,8 @@ public class ModItems {
     public static RegistryObject<Item> PINEAPPLE_PIZZA_SLICE = ITEMS.register("pineapple_pizza_slice", () -> new FoodItem(new Item.Properties(),4,0.3f));
     public static RegistryObject<Item> PINEAPPLE             = ITEMS.register("pineapple",             () -> new FoodItem(new Item.Properties(),4,0.3f));
     public static RegistryObject<Item> CAKE_BITE             = ITEMS.register("cake_bite",             () -> new FoodItem(new Item.Properties(),4,0.3f));
+    public static RegistryObject<Item> STRAWBERRY            = ITEMS.register("strawberry",            () -> new FoodItem(new Item.Properties(),4,0.3f));
+
 
     // Seeds
     public static RegistryObject<Item> TOMATO_SEEDS    = ITEMS.register("tomato_seeds",    () -> new SeedItem(ModBlocks.TOMATO_CROP_BLOCK,    new Item.Properties()));

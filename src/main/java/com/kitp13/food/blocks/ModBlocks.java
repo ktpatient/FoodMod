@@ -3,6 +3,7 @@ package com.kitp13.food.blocks;
 import com.kitp13.food.Main;
 import com.kitp13.food.blocks.crops.PineappleCropBlock;
 import com.kitp13.food.blocks.crops.TomatoCropBlock;
+import com.kitp13.food.entity.blocks.BerryBushEntity;
 import com.kitp13.food.entity.blocks.ChoppingBoardEntity;
 import com.kitp13.food.entity.blocks.PizzaBlockTileEntity;
 import com.kitp13.food.entity.blocks.PotBlockEntity;
@@ -40,5 +41,10 @@ public class ModBlocks {
     public static final RegistryObject<Block> CHOPPING_BOARD_BLOCK = BLOCKS.register("chopping_board", ()->new ChoppingBoard(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD)));
     public static final RegistryObject<BlockItem> CHOPPING_BOARD_BLOCK_ITEM = ITEM_BLOCKS.register("chopping_board", ()->new BlockItem(CHOPPING_BOARD_BLOCK.get(), new Item.Properties()));
     public static final RegistryObject<BlockEntityType<ChoppingBoardEntity>> CHOPPING_BOARD_ENTITY = BLOCK_ENTITY.register("chopping_board_be", ()->BlockEntityType.Builder.of(ChoppingBoardEntity::new, ModBlocks.CHOPPING_BOARD_BLOCK.get()).build(null));
+
+    public static final RegistryObject<Block> BERRY_BUSH_BLOCK = BLOCKS.register("berry_bush", ()->new BerryBush(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD)));
+    public static final RegistryObject<BlockItem> BERRY_BUSH_BLOCK_ITEM = ITEM_BLOCKS.register("berry_bush", ()->new BlockItem(BERRY_BUSH_BLOCK.get(), new Item.Properties()));
+    public static final RegistryObject<BlockEntityType<BerryBushEntity>> BERRY_BUSH_ENTITY = BLOCK_ENTITY.register("berry_bush_be", ()->BlockEntityType.Builder.of(BerryBushEntity::new, ModBlocks.BERRY_BUSH_BLOCK.get()).build(null));
+
 
 }

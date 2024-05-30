@@ -10,7 +10,14 @@ public class BlockVoxelShapes {
     };
     public static final VoxelShape POT_BLOCK_SHAPE = makePotShape();
     public static final VoxelShape CHOPPING_BOARD_SHAPE = makeChoppingBoardShape();
+    public static final VoxelShape BERRY_BUSH_SHAPE = makeBerryShape();
 
+
+    private static VoxelShape makeBerryShape(){
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.join(shape, Shapes.box(0.0625, 0, 0.0625, 0.9375, 1, 0.9375), BooleanOp.OR);
+        return shape;
+    }
     private static VoxelShape makeChoppingBoardShape(){
         VoxelShape shape = Shapes.empty();
         shape = Shapes.join(shape, Shapes.box(0.125, 0, 0.125, 0.875, 0.125, 0.875), BooleanOp.OR);

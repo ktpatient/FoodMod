@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "size=1": { "model":  "food:block/berry_bush"},
+    "size=2": { "model":  "food:block/berry_bush"},
+    "size=3": { "model":  "food:block/berry_bush"},
+    "size=4": { "model":  "food:block/berry_bush2"}
+  }
+}
