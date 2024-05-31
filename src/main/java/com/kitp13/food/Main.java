@@ -22,8 +22,7 @@ public class Main {
         bus.addListener(this::renderEvent);
         ModFluids.FLUIDS.register(bus);
         ModFluids.FLUID_TYPES.register(bus);
-
-        ModItems.ITEMS.register(bus);
+        ModItems.register(bus);
         ModBlocks.BLOCKS.register(bus);
         ModBlocks.BLOCK_ENTITY.register(bus);
         ModBlocks.ITEM_BLOCKS.register(bus);

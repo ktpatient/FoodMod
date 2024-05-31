@@ -29,6 +29,47 @@ public class ItemModelGenerator extends ItemModelProvider {
         generateBlockParentModel("pot_block", "pot");
         generateBlockParentModel("chopping_board", "chopping_board");
         generateItemParentModel("milk_fluid_bucket", "milk_bucket", "minecraft");
+
+        generateItemModel("bag_of_chips");
+        generateItemModel("bannana");
+        generateItemModel("blueberries");
+        generateItemModel("bread_slice");
+        generateItemModel("butter");
+        generateItemModel("chili_pepper_green");
+        generateItemModel("chili_pepper_red");
+        generateItemModel("donut");
+        generateItemModel("doughnut_chocolate");
+        generateItemModel("doughnut_pink");
+        generateItemModel("doughnut_pink_sprinkles");
+        generateItemModel("egg");
+        generateItemModel("french_fries");
+        generateItemModel("garlic");
+        generateItemModel("green_apple");
+        generateItemModel("hotdog");
+        generateItemModel("ice_cream");
+        generateItemModel("lasagna");
+        generateItemModel("lemon");
+        generateItemModel("mango");
+        generateItemModel("meatball");
+        generateItemModel("onion");
+        generateItemModel("orange");
+        generateItemModel("pear");
+        generateItemModel("pineapple2");
+        generateItemModel("sandwich");
+        generateItemModel("soup_beet");
+        generateItemModel("soup_miso");
+        generateItemModel("soup_mushroom");
+        generateItemModel("soup_pea");
+        generateItemModel("spinach");
+        generateItemModel("strawberry2");
+        generateItemModel("strawberry_smoothie");
+        generateItemModel("turnip");
+        generateItemModel("waffle");
+        generateItemModel("waffle2");
+        generateItemModel("watermelon2");
+        generateItemModel("watermelon_slice");
+        generateItemModel("watermelon_slice2");
+        generateItemModel("watermelon_whole");
     }
     private void generateItemModel(String name){
         generateItemModel(name,name);
