@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -45,6 +46,12 @@ public class ModBlocks {
     public static final RegistryObject<Block> BERRY_BUSH_BLOCK = BLOCKS.register("berry_bush", ()->new BerryBush(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD)));
     public static final RegistryObject<BlockItem> BERRY_BUSH_BLOCK_ITEM = ITEM_BLOCKS.register("berry_bush", ()->new BlockItem(BERRY_BUSH_BLOCK.get(), new Item.Properties()));
     public static final RegistryObject<BlockEntityType<BerryBushEntity>> BERRY_BUSH_ENTITY = BLOCK_ENTITY.register("berry_bush_be", ()->BlockEntityType.Builder.of(BerryBushEntity::new, ModBlocks.BERRY_BUSH_BLOCK.get()).build(null));
+
+    public static void register(IEventBus bus){
+        BLOCKS.register(bus);
+        ITEM_BLOCKS.register(bus);
+        BLOCK_ENTITY.register(bus);
+    }
 
 
 }

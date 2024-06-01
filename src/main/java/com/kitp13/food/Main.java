@@ -20,13 +20,10 @@ public class Main {
     public Main(){
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(this::renderEvent);
-        ModFluids.FLUIDS.register(bus);
-        ModFluids.FLUID_TYPES.register(bus);
+        ModFluids.register(bus);
         ModItems.register(bus);
-        ModBlocks.BLOCKS.register(bus);
-        ModBlocks.BLOCK_ENTITY.register(bus);
-        ModBlocks.ITEM_BLOCKS.register(bus);
-        FoodTab.TABS.register(bus);
+        ModBlocks.register(bus);
+        FoodTab.register(bus);
     }
     private void renderEvent(EntityRenderersEvent.RegisterRenderers event){
         event.registerBlockEntityRenderer(ModBlocks.POT_TILE_ENTITY.get(), PotBlockRenderer::new);

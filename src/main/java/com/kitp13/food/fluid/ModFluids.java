@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.SoundActions;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.registries.DeferredRegister;
@@ -47,4 +48,9 @@ public class ModFluids {
     public static RegistryObject<Item> MILK_FLUID_BUCKET = ModItems.ITEMS.register("milk_fluid_bucket", ()->
             new BucketItem(MILK_FLUID_STILL, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
 
-}
+
+    public static void register(IEventBus bus){
+        FLUIDS.register(bus);
+        FLUID_TYPES.register(bus);
+
+    }}
