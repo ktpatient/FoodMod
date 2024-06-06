@@ -70,6 +70,7 @@ public class ItemModelGenerator extends ItemModelProvider {
         generateItemModel("watermelon_slice");
         generateItemModel("watermelon_slice2");
         generateItemModel("watermelon_whole");
+        generateItemModel("paxel");
     }
     private void generateItemModel(String name){
         generateItemModel(name,name);

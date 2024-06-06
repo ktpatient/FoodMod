@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": {
+      "item": "minecraft:cake"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "CCC",
+    " S ",
+    " S "
+  ],
+  "result": {
+    "item": "food:paxel"
+  },
+  "show_notification": true
+}

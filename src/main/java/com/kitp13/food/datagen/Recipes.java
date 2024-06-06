@@ -39,5 +39,9 @@ public class Recipes extends RecipeProvider implements IConditionBuilder {
                 .define('I', Items.IRON_INGOT).define('B', Items.BUCKET)
                 .unlockedBy(getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT))
                 .save(consumer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.PAXEL.get())
+                .pattern("CCC").pattern(" S ").pattern(" S ")
+                .define('C', Items.CAKE).define('S', Items.STICK)
+                .unlockedBy(getHasName(Items.CAKE), has(Items.CAKE)).save(consumer);
     }
 }

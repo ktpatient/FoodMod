@@ -2,15 +2,20 @@ package com.kitp13.food.event;
 
 import com.kitp13.food.Main;
 import com.kitp13.food.items.ModItems;
+import com.kitp13.food.items.tools.Paxel;
+import com.kitp13.food.items.tools.ToolCapabilities;
 import com.kitp13.food.library.ItemUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -46,5 +51,49 @@ public class ModEvents {
                 ItemUtils.spawnItemAtBlock(event.getPlayer().level(), event.getPos(),new ItemStack(ModItems.CAKE_BITE.get()));
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onItemCrafted(PlayerEvent.ItemCraftedEvent event) {
+        ItemStack result = event.getCrafting();
+        Player player = event.getEntity();
+
+        if (result.getItem() instanceof Paxel) {
+            Paxel.setSockets(result, 5);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onAnvilUpdate(AnvilUpdateEvent event) {
+        ItemStack leftStack = event.getLeft();
+        ItemStack rightStack = event.getRight();
+        if (leftStack.getItem() instanceof Paxel) {
+            if (Paxel.getSockets(leftStack)<=0) {
+
+            } else if (rightStack.getItem() == Items.WOODEN_AXE && !Paxel.hasCapability(leftStack, ToolCapabilities.AXE)) {
+                int combinedCapabilities = Paxel.getToolCapabilities(leftStack) | ToolCapabilities.AXE.getBit();
+                ItemStack output = leftStack.copy();
+                Paxel.setToolCapabilities(output, combinedCapabilities);
+                Paxel.setSockets(output,Paxel.getSockets(output)-1);
+                event.setOutput(output);
+                event.setCost(1);
+
+            } else if (rightStack.getItem() == Items.WOODEN_PICKAXE && !Paxel.hasCapability(leftStack, ToolCapabilities.PICKAXE)) {
+                int combinedCapabilities = Paxel.getToolCapabilities(leftStack) | ToolCapabilities.PICKAXE.getBit();
+                ItemStack output = leftStack.copy();
+                Paxel.setToolCapabilities(output, combinedCapabilities);
+                event.setOutput(output);
+                event.setCost(1);
+
+            } else if (rightStack.getItem() == Items.WOODEN_SHOVEL && !Paxel.hasCapability(leftStack, ToolCapabilities.SHOVEL)) {
+                int combinedCapabilities = Paxel.getToolCapabilities(leftStack) | ToolCapabilities.SHOVEL.getBit();
+                ItemStack output = leftStack.copy();
+                Paxel.setToolCapabilities(output, combinedCapabilities);
+                event.setOutput(output);
+                event.setCost(1);
+
+            }
+        }
+
     }
 }

@@ -2,8 +2,11 @@ package com.kitp13.food.items;
 
 import com.kitp13.food.Main;
 import com.kitp13.food.blocks.ModBlocks;
+import com.kitp13.food.items.tools.Paxel;
+import com.kitp13.food.items.tools.Tiers;
 import com.kitp13.food.library.items.FoodItem;
 import com.kitp13.food.library.items.SeedItem;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -30,6 +33,9 @@ public class ModItems {
 
     //Miscellaneous Intermediate Items
     public static RegistryObject<Item> DOUGH;
+
+    // Tools
+    public static RegistryObject<Item> PAXEL;
 
     public static void register(IEventBus bus){
         TOMATO_FRUIT          = genericFood("tomato");
@@ -82,6 +88,8 @@ public class ModItems {
         genericFood("watermelon_slice");
         genericFood("watermelon_slice2");
         genericFood("watermelon_whole");
+
+        PAXEL = ITEMS.register("paxel", ()->new Paxel(5.0f,-3.0f, Tiers.CAXE, BlockTags.MINEABLE_WITH_PICKAXE, new Item.Properties()));
 
         ITEMS.register(bus);
     }
