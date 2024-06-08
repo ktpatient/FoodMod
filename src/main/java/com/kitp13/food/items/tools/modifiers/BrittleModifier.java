@@ -4,8 +4,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -26,7 +24,7 @@ public class BrittleModifier implements Modifiers{
 
     @Override
     public MutableComponent shiftTooltip(ItemStack stack) {
-        return Component.literal("Takes extra damage than normal, when breaking blocks").withStyle(Style.EMPTY.withColor(TextColor.parseColor("#4085f5")));
+        return Component.literal("Takes extra damage than normal, when breaking blocks").withStyle(ChatFormatting.AQUA);
     }
 
     @Override

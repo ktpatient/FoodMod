@@ -7,6 +7,7 @@ import com.kitp13.food.items.tools.ToolCapabilities;
 import com.kitp13.food.items.tools.modifiers.BrittleModifier;
 import com.kitp13.food.items.tools.modifiers.Modifiers;
 import com.kitp13.food.items.tools.modifiers.TestModifier;
+import com.kitp13.food.items.tools.modifiers.VampiricModifier;
 import com.kitp13.food.library.ItemUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.world.entity.npc.VillagerProfession;
@@ -134,6 +135,14 @@ public class ModEvents {
                 ItemStack output = leftStack.copy();
                 Paxel.setSockets(output,Paxel.getSockets(output)-1);
                 Paxel.addModifier(output, new BrittleModifier());
+                event.setOutput(output);
+                event.setCost(1);
+                event.setMaterialCost(1);
+
+            } else if (rightStack.getItem() == Items.RED_DYE && !Paxel.hasModifier(leftStack, VampiricModifier.NAME)) {
+                ItemStack output = leftStack.copy();
+                Paxel.setSockets(output,Paxel.getSockets(output)-1);
+                Paxel.addModifier(output, new VampiricModifier());
                 event.setOutput(output);
                 event.setCost(1);
                 event.setMaterialCost(1);

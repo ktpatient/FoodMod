@@ -4,6 +4,7 @@ import com.kitp13.food.Main;
 import com.kitp13.food.items.tools.modifiers.BrittleModifier;
 import com.kitp13.food.items.tools.modifiers.Modifiers;
 import com.kitp13.food.items.tools.modifiers.TestModifier;
+import com.kitp13.food.items.tools.modifiers.VampiricModifier;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -138,6 +139,8 @@ public class Paxel extends DiggerItem {
             modifierTag.putInt("Level", ((TestModifier) modifier).getLevel());
         }  else if (modifier instanceof BrittleModifier){
             modifierTag.putString("Type", BrittleModifier.NAME);
+        }  else if (modifier instanceof VampiricModifier){
+            modifierTag.putString("Type", VampiricModifier.NAME);
         }
         else {
             Main.LOGGER.error("Error passing in modifier {}", modifier.getName());
@@ -174,6 +177,8 @@ public class Paxel extends DiggerItem {
                     modifiers.add(new TestModifier(modifierTag.getInt("Level")));
                 } else if (type.equals(BrittleModifier.NAME)){
                     modifiers.add(new BrittleModifier());
+                } else if (type.equals(VampiricModifier.NAME)){
+                    modifiers.add(new VampiricModifier());
                 }
             }
         }
@@ -230,6 +235,14 @@ public class Paxel extends DiggerItem {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, @NotNull LivingEntity attacker) {
+        for (Modifiers modifiers : getModifiers(stack)){
+            modifiers.onAttack(stack, target, attacker);
+        }
+        return super.hurtEnemy(stack, target, attacker);
     }
 
     @Override

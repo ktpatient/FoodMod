@@ -28,11 +28,6 @@ public class TestModifier implements Modifiers {
     }
 
     @Override
-    public MutableComponent shiftTooltip(ItemStack stack) {
-        return Component.literal("");
-    }
-
-    @Override
     public void onMine(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity) {
         entity.addEffect(new MobEffectInstance(MobEffects.POISON, 10, this.level - 1));
     }
