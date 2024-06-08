@@ -82,6 +82,7 @@ public class ModEvents {
                 int combinedCapabilities = Paxel.getToolCapabilities(leftStack) | ToolCapabilities.PICKAXE.getBit();
                 ItemStack output = leftStack.copy();
                 Paxel.setToolCapabilities(output, combinedCapabilities);
+                Paxel.setSockets(output,Paxel.getSockets(output)-1);
                 event.setOutput(output);
                 event.setCost(1);
 
@@ -89,11 +90,20 @@ public class ModEvents {
                 int combinedCapabilities = Paxel.getToolCapabilities(leftStack) | ToolCapabilities.SHOVEL.getBit();
                 ItemStack output = leftStack.copy();
                 Paxel.setToolCapabilities(output, combinedCapabilities);
+                Paxel.setSockets(output,Paxel.getSockets(output)-1);
                 event.setOutput(output);
                 event.setCost(1);
 
+            } else if (rightStack.getItem() == Items.REDSTONE_BLOCK){
+                float currnetSpeed = Paxel.getMiningSpeedModifier(leftStack);
+                ItemStack output = leftStack.copy();
+                Paxel.setMiningSpeedModifier(output, currnetSpeed + 2.5f);
+                Paxel.setSockets(output,Paxel.getSockets(output)-1);
+                event.setOutput(output);
+                event.setCost(1);
+                event.setMaterialCost(1);
+
             }
         }
-
     }
 }

@@ -26,23 +26,27 @@ import java.util.List;
 public class Paxel extends DiggerItem {
     private static final String SOCKET_KEY = "socket";
     private static final String TOOL_CAPABILITIES_KEY = "ToolCapabilities";
+    private static final String MINING_MODIFIER_KEY = "MiningModifier";
+
     public Paxel(float damage, float attackSpeed, Tier tier, TagKey<Block> p_204111_, Properties properties) {
         super(damage, attackSpeed, tier, p_204111_, properties);
     }
 
     @Override
     public float getDestroySpeed(@NotNull ItemStack stack, @NotNull BlockState state) {
+        float speed = 1.0f;
         if (hasCapability(stack, ToolCapabilities.PICKAXE) && state.is(BlockTags.MINEABLE_WITH_PICKAXE)) {
-            return this.speed;
+            speed = this.speed;
         }
         if (hasCapability(stack, ToolCapabilities.AXE) && state.is(BlockTags.MINEABLE_WITH_AXE)) {
-            return this.speed;
+            speed = this.speed;
         }
         if (hasCapability(stack, ToolCapabilities.SHOVEL) && state.is(BlockTags.MINEABLE_WITH_SHOVEL)) {
-            return this.speed;
+            speed = this.speed;
         }
-        return super.getDestroySpeed(stack, state);
+        return speed + getMiningSpeedModifier(stack);
     }
+
     public static int getSockets(ItemStack stack) {
         CompoundTag nbt = stack.getOrCreateTag();
         return nbt.getInt(SOCKET_KEY);
@@ -51,6 +55,19 @@ public class Paxel extends DiggerItem {
     public static void setSockets(ItemStack stack, int sockets) {
         CompoundTag nbt = stack.getOrCreateTag();
         nbt.putInt(SOCKET_KEY, sockets);
+    }
+
+    public static void setMiningSpeedModifier(ItemStack stack, float modifier) {
+        CompoundTag tag = stack.getOrCreateTag();
+        tag.putFloat(MINING_MODIFIER_KEY, modifier);
+    }
+
+    public static float getMiningSpeedModifier(ItemStack stack) {
+        CompoundTag tag = stack.getTag();
+        if (tag != null && tag.contains(MINING_MODIFIER_KEY)) {
+            return tag.getFloat(MINING_MODIFIER_KEY);
+        }
+        return 0.0F;
     }
 
     public static void setToolCapabilities(ItemStack stack, int capabilities) {
@@ -85,7 +102,7 @@ public class Paxel extends DiggerItem {
         if (hasCapability(stack, ToolCapabilities.SHOVEL)){
             tooltip.add(Component.literal("SHOVEL"));
         }
-
+        tooltip.add(Component.literal("Mining Speed Modifier: " + getMiningSpeedModifier(stack)));
     }
 
     @Override
