@@ -1,16 +1,17 @@
 package com.kitp13.food.items.tools;
 
 import com.kitp13.food.Main;
+import com.kitp13.food.items.tools.modifiers.BrittleModifier;
 import com.kitp13.food.items.tools.modifiers.Modifiers;
 import com.kitp13.food.items.tools.modifiers.TestModifier;
 import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
@@ -118,6 +119,16 @@ public class Paxel extends DiggerItem {
         return ToolCapabilities.hasCapability(capabilities, capability);
     }
 
+    public static boolean hasModifier(ItemStack stack,String name){
+        List<Modifiers> modifiersList = getModifiers(stack);
+        for (Modifiers modifier : modifiersList){
+            if (modifier.getName().equals(name)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void addModifier(ItemStack stack, Modifiers modifier) {
         CompoundTag tag = stack.getOrCreateTag();
         ListTag modifiersList = tag.getList(MODIFIERS_KEY, 10); // 10 for compound tag type
@@ -125,7 +136,10 @@ public class Paxel extends DiggerItem {
         if (modifier instanceof TestModifier) {
             modifierTag.putString("Type", TestModifier.NAME);
             modifierTag.putInt("Level", ((TestModifier) modifier).getLevel());
-        } else {
+        }  else if (modifier instanceof BrittleModifier){
+            modifierTag.putString("Type", BrittleModifier.NAME);
+        }
+        else {
             Main.LOGGER.error("Error passing in modifier {}", modifier.getName());
         }
         modifiersList.add(modifierTag);
@@ -156,8 +170,10 @@ public class Paxel extends DiggerItem {
             for (int i = 0; i < modifiersList.size(); i++) {
                 CompoundTag modifierTag = modifiersList.getCompound(i);
                 String type = modifierTag.getString("Type");
-                if (type.equals("Test")) {
+                if (type.equals(TestModifier.NAME)){
                     modifiers.add(new TestModifier(modifierTag.getInt("Level")));
+                } else if (type.equals(BrittleModifier.NAME)){
+                    modifiers.add(new BrittleModifier());
                 }
             }
         }
@@ -167,21 +183,30 @@ public class Paxel extends DiggerItem {
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level p_41422_, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
         super.appendHoverText(stack, p_41422_, tooltip, flag);
-        tooltip.add(Component.literal("Sockets: "+getSockets(stack)).withStyle(Style.EMPTY.withColor(TextColor.parseColor("#4085F5"))));
-        tooltip.add(Component.literal("Capabilities: "+getToolCapabilities(stack)).withStyle(Style.EMPTY.withColor(TextColor.parseColor("#F58540"))));
+        tooltip.add(Component.empty().append(Component.literal("Sockets: ")).append(Component.literal(""+getSockets(stack)).withStyle(ChatFormatting.BLUE)));
+        // tooltip.add(Component.empty().append("Sockets: ").append(""+getSockets(stack)).withStyle(ChatFormatting.AQUA));
+        // tooltip.add(Component.literal("Capabilities: "+getToolCapabilities(stack)).withStyle(ChatFormatting.AQUA));
         if (hasCapability(stack, ToolCapabilities.PICKAXE)){
-            tooltip.add(Component.literal("PICKAXE"));
+            tooltip.add(Component.empty().append(Component.literal("Works as Tool: ")).append(Component.literal("PICKAXE").withStyle(ChatFormatting.BLUE)));
         }
         if (hasCapability(stack, ToolCapabilities.AXE)){
-            tooltip.add(Component.literal("AXE"));
+            tooltip.add(Component.empty().append(Component.literal("Works as Tool: ")).append(Component.literal("AXE").withStyle(ChatFormatting.BLUE)));
         }
         if (hasCapability(stack, ToolCapabilities.SHOVEL)){
-            tooltip.add(Component.literal("SHOVEL"));
+            tooltip.add(Component.empty().append(Component.literal("Works as Tool: ")).append(Component.literal("SHOVEL").withStyle(ChatFormatting.BLUE)));
         }
-        tooltip.add(Component.literal("Mining Speed Modifier: " + getMiningSpeedModifier(stack)));
-        tooltip.add(Component.literal("Durability Modifier: " + getDurabilityModifier(stack)));
-        for (Modifiers modifiers : getModifiers(stack)){
-            tooltip.add(modifiers.tooltip(stack));
+        Component.empty().append(Component.literal("Mining Speed Modifier: ")).append(Component.literal(""+getMiningSpeedModifier(stack)).withStyle(ChatFormatting.BLUE));
+        tooltip.add(Component.empty().append(Component.literal("Mining Speed Modifier: ")).append(Component.literal(""+getMiningSpeedModifier(stack)).withStyle(ChatFormatting.BLUE)));
+        tooltip.add(Component.empty().append(Component.literal("Durability Modifier: ")).append(Component.literal(""+getDurabilityModifier(stack)).withStyle(ChatFormatting.BLUE)));
+        List<Modifiers> modifiersList = getModifiers(stack);
+        if (!modifiersList.isEmpty()){
+            tooltip.add(Component.empty().append(Component.literal("Modifiers: ")));
+        }
+        for (Modifiers modifiers : modifiersList){
+            tooltip.add(Component.empty().append(Component.literal("    ")).append(modifiers.tooltip(stack)));
+            if (Screen.hasShiftDown()){
+                tooltip.add(modifiers.shiftTooltip(stack));
+            }
         }
     }
 

@@ -1,43 +1,36 @@
 package com.kitp13.food.items.tools.modifiers;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TestModifier implements Modifiers {
-    public static final String NAME = "TestModifier";
-    @Override
-    public String getName(){
-        return NAME;
-    }
-    private final int level;
+public class BrittleModifier implements Modifiers{
+    public static final String NAME = "Brittle";
 
-    public TestModifier(int level) {
-        this.level = level;
+    @Override
+    public String getName() {
+        return NAME;
     }
 
     @Override
     public MutableComponent tooltip(ItemStack stack) {
-        return Component.literal("TestModifier Level " + level);
+        return Component.literal("Brittle").withStyle(ChatFormatting.GREEN);
     }
 
     @Override
     public MutableComponent shiftTooltip(ItemStack stack) {
-        return Component.literal("");
+        return Component.literal("Takes extra damage than normal, when breaking blocks").withStyle(Style.EMPTY.withColor(TextColor.parseColor("#4085f5")));
     }
 
     @Override
     public void onMine(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity) {
-        entity.addEffect(new MobEffectInstance(MobEffects.POISON, 10, this.level - 1));
-    }
-
-    public int getLevel() {
-        return level;
+        stack.hurtAndBreak(3,entity, (e) -> e.broadcastBreakEvent(e.getUsedItemHand()));
     }
 }

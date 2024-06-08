@@ -4,6 +4,9 @@ import com.kitp13.food.Main;
 import com.kitp13.food.items.ModItems;
 import com.kitp13.food.items.tools.Paxel;
 import com.kitp13.food.items.tools.ToolCapabilities;
+import com.kitp13.food.items.tools.modifiers.BrittleModifier;
+import com.kitp13.food.items.tools.modifiers.Modifiers;
+import com.kitp13.food.items.tools.modifiers.TestModifier;
 import com.kitp13.food.library.ItemUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.world.entity.npc.VillagerProfession;
@@ -116,9 +119,21 @@ public class ModEvents {
                 ItemStack output = leftStack.copy();
                 Paxel.setSockets(output,Paxel.getSockets(output)-1);
                 int currentLevel = 0;
-                /*
-                Remove the existing Modifier if present
-                 */
+                for (Modifiers modifiers : Paxel.getModifiers(output)){
+                    if(modifiers instanceof TestModifier modifier){
+                        currentLevel+=modifier.getLevel();
+                        Paxel.removeModifier(output, modifier);
+                    }
+                }
+                Paxel.addModifier(output, new TestModifier(currentLevel+1));
+                event.setOutput(output);
+                event.setCost(1);
+                event.setMaterialCost(1);
+
+            } else if (rightStack.getItem() == Items.SAND && !Paxel.hasModifier(leftStack, BrittleModifier.NAME)) {
+                ItemStack output = leftStack.copy();
+                Paxel.setSockets(output,Paxel.getSockets(output)-1);
+                Paxel.addModifier(output, new BrittleModifier());
                 event.setOutput(output);
                 event.setCost(1);
                 event.setMaterialCost(1);
