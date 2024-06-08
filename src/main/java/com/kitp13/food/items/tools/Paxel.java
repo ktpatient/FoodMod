@@ -9,6 +9,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -26,11 +27,13 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class Paxel extends DiggerItem {
 
@@ -140,7 +143,7 @@ public class Paxel extends DiggerItem {
         }  else if (modifier instanceof BrittleModifier){
             modifierTag.putString("Type", BrittleModifier.NAME);
         }  else if (modifier instanceof VampiricModifier){
-            modifierTag.putString("Type", VampiricModifier.NAME);
+            modifierTag.putString("Type", VampiricModifier.NAME) ;
         }
         else {
             Main.LOGGER.error("Error passing in modifier {}", modifier.getName());
@@ -251,5 +254,16 @@ public class Paxel extends DiggerItem {
             modifiers.onMine(stack, level, state, pos, entity);
         }
         return super.mineBlock(stack, level, state, pos, entity);
+    }
+    public static final PaxelRenderer RENDERER = new PaxelRenderer();
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            @Override
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                return RENDERER;
+            }
+        });
     }
 }
