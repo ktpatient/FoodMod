@@ -1,4 +1,4 @@
-package com.kitp13.food.blocks;
+package com.kitp13.food.blocks.pizza;
 
 import com.kitp13.food.entity.blocks.PizzaBlockTileEntity;
 import com.kitp13.food.items.ModItems;
