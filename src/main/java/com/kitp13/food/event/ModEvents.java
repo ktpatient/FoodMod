@@ -95,9 +95,9 @@ public class ModEvents {
                 event.setCost(1);
 
             } else if (rightStack.getItem() == Items.REDSTONE_BLOCK){
-                float currnetSpeed = Paxel.getMiningSpeedModifier(leftStack);
+                float currentSpeed = Paxel.getMiningSpeedModifier(leftStack);
                 ItemStack output = leftStack.copy();
-                Paxel.setMiningSpeedModifier(output, currnetSpeed + 2.5f);
+                Paxel.setMiningSpeedModifier(output, currentSpeed + 2.5f);
                 Paxel.setSockets(output,Paxel.getSockets(output)-1);
                 event.setOutput(output);
                 event.setCost(1);
