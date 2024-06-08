@@ -103,6 +103,15 @@ public class ModEvents {
                 event.setCost(1);
                 event.setMaterialCost(1);
 
+            } else if (rightStack.getItem() == Items.OBSIDIAN) {
+                int currentModifier = Paxel.getDurabilityModifier(leftStack);
+                ItemStack output = leftStack.copy();
+                Paxel.setDurabilityModifier(output, currentModifier + 256);
+                Paxel.setSockets(output,Paxel.getSockets(output)-1);
+                event.setOutput(output);
+                event.setCost(1);
+                event.setMaterialCost(1);
+
             }
         }
     }

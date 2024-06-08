@@ -24,9 +24,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class Paxel extends DiggerItem {
+
     private static final String SOCKET_KEY = "socket";
     private static final String TOOL_CAPABILITIES_KEY = "ToolCapabilities";
     private static final String MINING_MODIFIER_KEY = "MiningModifier";
+    private static final String DURABILITY_MODIFIER_KEY = "DurabilityModifier";
 
     public Paxel(float damage, float attackSpeed, Tier tier, TagKey<Block> p_204111_, Properties properties) {
         super(damage, attackSpeed, tier, p_204111_, properties);
@@ -70,6 +72,26 @@ public class Paxel extends DiggerItem {
         return 0.0F;
     }
 
+    public static void setDurabilityModifier(ItemStack stack, int modifier) {
+        CompoundTag tag = stack.getOrCreateTag();
+        tag.putInt(DURABILITY_MODIFIER_KEY, modifier);
+    }
+
+    public static int getDurabilityModifier(ItemStack stack) {
+        CompoundTag tag = stack.getTag();
+        if (tag != null && tag.contains(DURABILITY_MODIFIER_KEY)) {
+            return tag.getInt(DURABILITY_MODIFIER_KEY);
+        }
+        return 0;
+    }
+
+    @Override
+    public int getMaxDamage(ItemStack stack) {
+        int original =  super.getMaxDamage(stack);
+        int modifier = getDurabilityModifier(stack);
+        return original + modifier;
+    }
+
     public static void setToolCapabilities(ItemStack stack, int capabilities) {
         CompoundTag tag = stack.getOrCreateTag();
         tag.putInt(TOOL_CAPABILITIES_KEY, capabilities);
@@ -89,7 +111,7 @@ public class Paxel extends DiggerItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level p_41422_, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level p_41422_, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
         super.appendHoverText(stack, p_41422_, tooltip, flag);
         tooltip.add(Component.literal("Sockets: "+getSockets(stack)).withStyle(Style.EMPTY.withColor(TextColor.parseColor("#4085F5"))));
         tooltip.add(Component.literal("Capabilities: "+getToolCapabilities(stack)).withStyle(Style.EMPTY.withColor(TextColor.parseColor("#F58540"))));
@@ -103,10 +125,12 @@ public class Paxel extends DiggerItem {
             tooltip.add(Component.literal("SHOVEL"));
         }
         tooltip.add(Component.literal("Mining Speed Modifier: " + getMiningSpeedModifier(stack)));
+        tooltip.add(Component.literal("Durability Modifier: " + getDurabilityModifier(stack)));
+
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level p_41432_, Player player, InteractionHand hand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level p_41432_, @NotNull Player player, @NotNull InteractionHand hand) {
         if (InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(),InputConstants.KEY_LSHIFT)){
             setToolCapabilities(player.getItemInHand(hand),(getToolCapabilities(player.getItemInHand(hand))+1)%8);
         }
@@ -114,7 +138,7 @@ public class Paxel extends DiggerItem {
     }
 
     @Override
-    public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
+    public boolean isCorrectToolForDrops(@NotNull ItemStack stack, @NotNull BlockState state) {
         if (hasCapability(stack, ToolCapabilities.PICKAXE) && state.is(BlockTags.MINEABLE_WITH_PICKAXE)) {
             return true;
         }
