@@ -112,6 +112,17 @@ public class ModEvents {
                 event.setCost(1);
                 event.setMaterialCost(1);
 
+            } else if (rightStack.getItem() == Items.DIAMOND) {
+                ItemStack output = leftStack.copy();
+                Paxel.setSockets(output,Paxel.getSockets(output)-1);
+                int currentLevel = 0;
+                /*
+                Remove the existing Modifier if present
+                 */
+                event.setOutput(output);
+                event.setCost(1);
+                event.setMaterialCost(1);
+
             }
         }
     }

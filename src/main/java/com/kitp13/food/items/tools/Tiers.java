@@ -1,12 +1,12 @@
 package com.kitp13.food.items.tools;
 
-import net.minecraft.world.item.Items;
+import com.kitp13.food.items.ModItems;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
 
 public enum Tiers implements Tier {
-    CAXE(3,255,7.0f,2,10,Ingredient.of(Items.DIAMOND));
+    CAXE(3,255,7.0f,2,10,Ingredient.of(ModItems.PINEAPPLE.get()));
     private final int level;
     private final int uses;
     private final float speed;

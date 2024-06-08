@@ -1,8 +1,13 @@
 package com.kitp13.food.items.tools;
 
+import com.kitp13.food.Main;
+import com.kitp13.food.items.tools.modifiers.Modifiers;
+import com.kitp13.food.items.tools.modifiers.TestModifier;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
@@ -10,6 +15,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
@@ -21,6 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Paxel extends DiggerItem {
@@ -29,6 +36,7 @@ public class Paxel extends DiggerItem {
     private static final String TOOL_CAPABILITIES_KEY = "ToolCapabilities";
     private static final String MINING_MODIFIER_KEY = "MiningModifier";
     private static final String DURABILITY_MODIFIER_KEY = "DurabilityModifier";
+    private static final String MODIFIERS_KEY = "Modifiers";
 
     public Paxel(float damage, float attackSpeed, Tier tier, TagKey<Block> p_204111_, Properties properties) {
         super(damage, attackSpeed, tier, p_204111_, properties);
@@ -110,6 +118,52 @@ public class Paxel extends DiggerItem {
         return ToolCapabilities.hasCapability(capabilities, capability);
     }
 
+    public static void addModifier(ItemStack stack, Modifiers modifier) {
+        CompoundTag tag = stack.getOrCreateTag();
+        ListTag modifiersList = tag.getList(MODIFIERS_KEY, 10); // 10 for compound tag type
+        CompoundTag modifierTag = new CompoundTag();
+        if (modifier instanceof TestModifier) {
+            modifierTag.putString("Type", TestModifier.NAME);
+            modifierTag.putInt("Level", ((TestModifier) modifier).getLevel());
+        } else {
+            Main.LOGGER.error("Error passing in modifier {}", modifier.getName());
+        }
+        modifiersList.add(modifierTag);
+        tag.put(MODIFIERS_KEY, modifiersList);
+    }
+
+    public static void removeModifier(ItemStack stack, Modifiers modifier) {
+        CompoundTag tag = stack.getOrCreateTag();
+        if (tag.contains(MODIFIERS_KEY)) {
+            ListTag modifiersList = tag.getList(MODIFIERS_KEY, 10);
+            ListTag newModifiersList = new ListTag();
+            for (int i = 0; i < modifiersList.size(); i++) {
+                CompoundTag modifierTag = modifiersList.getCompound(i);
+                String type = modifierTag.getString("Type");
+                if (!type.equals(modifier.getName())) {
+                    newModifiersList.add(modifierTag);
+                }
+            }
+            tag.put(MODIFIERS_KEY, newModifiersList);
+        }
+    }
+
+    public static List<Modifiers> getModifiers(ItemStack stack) {
+        CompoundTag tag = stack.getTag();
+        List<Modifiers> modifiers = new ArrayList<>();
+        if (tag != null && tag.contains(MODIFIERS_KEY)) {
+            ListTag modifiersList = tag.getList(MODIFIERS_KEY, 10);
+            for (int i = 0; i < modifiersList.size(); i++) {
+                CompoundTag modifierTag = modifiersList.getCompound(i);
+                String type = modifierTag.getString("Type");
+                if (type.equals("Test")) {
+                    modifiers.add(new TestModifier(modifierTag.getInt("Level")));
+                }
+            }
+        }
+        return modifiers;
+    }
+
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level p_41422_, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
         super.appendHoverText(stack, p_41422_, tooltip, flag);
@@ -126,15 +180,17 @@ public class Paxel extends DiggerItem {
         }
         tooltip.add(Component.literal("Mining Speed Modifier: " + getMiningSpeedModifier(stack)));
         tooltip.add(Component.literal("Durability Modifier: " + getDurabilityModifier(stack)));
-
+        for (Modifiers modifiers : getModifiers(stack)){
+            tooltip.add(modifiers.tooltip(stack));
+        }
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level p_41432_, @NotNull Player player, @NotNull InteractionHand hand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         if (InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(),InputConstants.KEY_LSHIFT)){
-            setToolCapabilities(player.getItemInHand(hand),(getToolCapabilities(player.getItemInHand(hand))+1)%8);
+            setSockets(player.getItemInHand(hand),(getSockets(player.getItemInHand(hand))+1));
         }
-        return super.use(p_41432_, player, hand);
+        return super.use(level, player, hand);
     }
 
     @Override
@@ -149,5 +205,13 @@ public class Paxel extends DiggerItem {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean mineBlock(@NotNull ItemStack stack, @NotNull Level level, @NotNull BlockState state, @NotNull BlockPos pos, @NotNull LivingEntity entity) {
+        for (Modifiers modifiers : getModifiers(stack)){
+            modifiers.onMine(stack, level, state, pos, entity);
+        }
+        return super.mineBlock(stack, level, state, pos, entity);
     }
 }
