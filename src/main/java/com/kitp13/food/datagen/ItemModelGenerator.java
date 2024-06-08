@@ -70,7 +70,8 @@ public class ItemModelGenerator extends ItemModelProvider {
         generateItemModel("watermelon_slice");
         generateItemModel("watermelon_slice2");
         generateItemModel("watermelon_whole");
-        generateItemModel("paxel");
+
+        generateEntityItemModel("paxel");
     }
     private void generateItemModel(String name){
         generateItemModel(name,name);
@@ -78,6 +79,14 @@ public class ItemModelGenerator extends ItemModelProvider {
     private void generateItemModel(String itemName, String texturePath) {
         getBuilder(itemName)
                 .parent(new ModelFile.UncheckedModelFile("item/generated"))
+                .texture("layer0", new ResourceLocation(Main.MODID, "item/"+texturePath));
+    }
+    private void generateEntityItemModel(String name){
+        generateEntityItemModel(name,name);
+    }
+    private void generateEntityItemModel(String itemName, String texturePath) {
+        getBuilder(itemName)
+                .parent(new ModelFile.UncheckedModelFile("builtin/entity"))
                 .texture("layer0", new ResourceLocation(Main.MODID, "item/"+texturePath));
     }
     private void generateParentModel(String itemName, String modelName, String modelType, String modid){
