@@ -1,8 +1,11 @@
 package com.kitp13.food.blocks;
 
 import com.kitp13.food.Main;
+import com.kitp13.food.blocks.bush.BerryBush;
 import com.kitp13.food.blocks.crops.PineappleCropBlock;
 import com.kitp13.food.blocks.crops.TomatoCropBlock;
+import com.kitp13.food.blocks.pizza.PineapplePizzaBlock;
+import com.kitp13.food.blocks.pizza.PizzaBlock;
 import com.kitp13.food.entity.blocks.BerryBushEntity;
 import com.kitp13.food.entity.blocks.ChoppingBoardEntity;
 import com.kitp13.food.entity.blocks.PizzaBlockTileEntity;

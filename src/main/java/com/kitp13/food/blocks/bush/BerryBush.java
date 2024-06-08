@@ -1,4 +1,4 @@
-package com.kitp13.food.blocks;
+package com.kitp13.food.blocks.bush;
 
 import com.kitp13.food.items.ModItems;
 import com.kitp13.food.library.ItemUtils;
