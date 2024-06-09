@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BrittleModifier implements Modifiers{
+public class BrittleModifier extends BooleanModifier{
     public static final String NAME = "Brittle";
 
     @Override

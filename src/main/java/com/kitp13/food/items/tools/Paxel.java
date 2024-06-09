@@ -1,10 +1,7 @@
 package com.kitp13.food.items.tools;
 
 import com.kitp13.food.Main;
-import com.kitp13.food.items.tools.modifiers.BrittleModifier;
-import com.kitp13.food.items.tools.modifiers.Modifiers;
-import com.kitp13.food.items.tools.modifiers.TestModifier;
-import com.kitp13.food.items.tools.modifiers.VampiricModifier;
+import com.kitp13.food.items.tools.modifiers.*;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -137,13 +134,12 @@ public class Paxel extends DiggerItem {
         CompoundTag tag = stack.getOrCreateTag();
         ListTag modifiersList = tag.getList(MODIFIERS_KEY, 10); // 10 for compound tag type
         CompoundTag modifierTag = new CompoundTag();
-        if (modifier instanceof TestModifier) {
-            modifierTag.putString("Type", TestModifier.NAME);
-            modifierTag.putInt("Level", ((TestModifier) modifier).getLevel());
-        }  else if (modifier instanceof BrittleModifier){
-            modifierTag.putString("Type", BrittleModifier.NAME);
-        }  else if (modifier instanceof VampiricModifier){
-            modifierTag.putString("Type", VampiricModifier.NAME) ;
+        if (modifier instanceof LeveledModifier leveledModifier) {
+            modifierTag.putString("Type", leveledModifier.getName());
+            modifierTag.putInt("Level", leveledModifier.getLevel());
+        }
+        else if (modifier instanceof BooleanModifier){
+            modifierTag.putString("Type", modifier.getName());
         }
         else {
             Main.LOGGER.error("Error passing in modifier {}", modifier.getName());
@@ -176,6 +172,28 @@ public class Paxel extends DiggerItem {
             for (int i = 0; i < modifiersList.size(); i++) {
                 CompoundTag modifierTag = modifiersList.getCompound(i);
                 String type = modifierTag.getString("Type");
+
+                /*
+                Ideally it would be something like this:
+                (Instead of manually doing it all)
+
+                Modifiers Modifier = getModifierByName(type);
+
+                if (Modifier instanceof LeveledModifier) {
+                    modifiers.add(new Modifier(modifierTag.getInt("Level")));
+                } else if (Modifier instanceof BooleanModifier) {
+                    modifiers.add(new Modifier)
+                }
+                */
+
+                if (ModifiersRegistry.MODIFIERS_MAP.get(type) instanceof BooleanModifier){
+                    modifiers.add(ModifiersRegistry.MODIFIERS_MAP.get(type));
+                } else if (ModifiersRegistry.MODIFIERS_MAP.get(type) instanceof LeveledModifier modifier){
+                    modifier.setLevel(modifierTag.getInt("Level"));
+                    modifiers.add(modifier);
+                }
+
+/*
                 if (type.equals(TestModifier.NAME)){
                     modifiers.add(new TestModifier(modifierTag.getInt("Level")));
                 } else if (type.equals(BrittleModifier.NAME)){
@@ -183,17 +201,15 @@ public class Paxel extends DiggerItem {
                 } else if (type.equals(VampiricModifier.NAME)){
                     modifiers.add(new VampiricModifier());
                 }
+                */
             }
         }
         return modifiers;
     }
-
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level p_41422_, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
         super.appendHoverText(stack, p_41422_, tooltip, flag);
         tooltip.add(Component.empty().append(Component.literal("Sockets: ")).append(Component.literal(""+getSockets(stack)).withStyle(ChatFormatting.BLUE)));
-        // tooltip.add(Component.empty().append("Sockets: ").append(""+getSockets(stack)).withStyle(ChatFormatting.AQUA));
-        // tooltip.add(Component.literal("Capabilities: "+getToolCapabilities(stack)).withStyle(ChatFormatting.AQUA));
         if (hasCapability(stack, ToolCapabilities.PICKAXE)){
             tooltip.add(Component.empty().append(Component.literal("Works as Tool: ")).append(Component.literal("PICKAXE").withStyle(ChatFormatting.BLUE)));
         }

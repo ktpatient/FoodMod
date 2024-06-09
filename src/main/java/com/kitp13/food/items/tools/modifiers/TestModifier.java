@@ -10,29 +10,29 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TestModifier implements Modifiers {
+public class TestModifier extends LeveledModifier {
     public static final String NAME = "TestModifier";
+
+    public TestModifier(int level) {
+        super(level);
+    }
+    public TestModifier() {
+        super(0);
+    }
+
+
     @Override
     public String getName(){
         return NAME;
     }
-    private final int level;
-
-    public TestModifier(int level) {
-        this.level = level;
-    }
 
     @Override
     public MutableComponent tooltip(ItemStack stack) {
-        return Component.literal("TestModifier Level " + level);
+        return Component.literal("TestModifier Level " + this.getLevel());
     }
 
     @Override
     public void onMine(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity) {
-        entity.addEffect(new MobEffectInstance(MobEffects.POISON, 10, this.level - 1));
-    }
-
-    public int getLevel() {
-        return level;
+        entity.addEffect(new MobEffectInstance(MobEffects.POISON, 10, this.getLevel() - 1));
     }
 }

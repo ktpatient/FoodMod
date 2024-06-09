@@ -4,10 +4,7 @@ import com.kitp13.food.Main;
 import com.kitp13.food.items.ModItems;
 import com.kitp13.food.items.tools.Paxel;
 import com.kitp13.food.items.tools.ToolCapabilities;
-import com.kitp13.food.items.tools.modifiers.BrittleModifier;
-import com.kitp13.food.items.tools.modifiers.Modifiers;
-import com.kitp13.food.items.tools.modifiers.TestModifier;
-import com.kitp13.food.items.tools.modifiers.VampiricModifier;
+import com.kitp13.food.items.tools.modifiers.*;
 import com.kitp13.food.library.ItemUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.world.entity.npc.VillagerProfession;
@@ -143,6 +140,14 @@ public class ModEvents {
                 ItemStack output = leftStack.copy();
                 Paxel.setSockets(output,Paxel.getSockets(output)-1);
                 Paxel.addModifier(output, new VampiricModifier());
+                event.setOutput(output);
+                event.setCost(1);
+                event.setMaterialCost(1);
+
+            } else if (rightStack.getItem() == Items.EXPERIENCE_BOTTLE && !Paxel.hasModifier(leftStack, MiningExpModifier.NAME)) {
+                ItemStack output = leftStack.copy();
+                Paxel.setSockets(output,Paxel.getSockets(output)-1);
+                Paxel.addModifier(output, new MiningExpModifier());
                 event.setOutput(output);
                 event.setCost(1);
                 event.setMaterialCost(1);
