@@ -11,6 +11,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.Random;
+
 public class MiningExpModifier extends BooleanModifier {
     public static final String NAME = "MiningExp";
 
@@ -29,8 +31,10 @@ public class MiningExpModifier extends BooleanModifier {
     }
 
     @Override
-    public void onMine(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity) {
-        ExperienceOrb.award((ServerLevel) level,pos.getCenter(),5);
-        super.onMine(stack, level, state, pos, entity);
+    public void onMine(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity, Random random) {
+        if (random.nextInt(10)>5){
+            ExperienceOrb.award((ServerLevel) level,pos.getCenter(),5);
+        }
+        super.onMine(stack, level, state, pos, entity, random);
     }
 }

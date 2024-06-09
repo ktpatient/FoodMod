@@ -6,6 +6,8 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.Random;
+
 public class VampiricModifier extends BooleanModifier{
     public static final String NAME = "Vampiric";
     @Override
@@ -24,7 +26,7 @@ public class VampiricModifier extends BooleanModifier{
     }
 
     @Override
-    public void onAttack(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+    public void onAttack(ItemStack stack, LivingEntity target, LivingEntity attacker, Random random) {
         attacker.heal(1.0f);
     }
 }

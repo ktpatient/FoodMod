@@ -9,6 +9,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.Random;
+
 public class BrittleModifier extends BooleanModifier{
     public static final String NAME = "Brittle";
 
@@ -28,7 +30,7 @@ public class BrittleModifier extends BooleanModifier{
     }
 
     @Override
-    public void onMine(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity) {
+    public void onMine(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity, Random random) {
         stack.hurtAndBreak(3,entity, (e) -> e.broadcastBreakEvent(e.getUsedItemHand()));
     }
 }

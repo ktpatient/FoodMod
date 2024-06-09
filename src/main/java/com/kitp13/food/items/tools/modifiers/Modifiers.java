@@ -8,6 +8,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.Random;
+
 public interface Modifiers {
     String NAME = "noName";
     String getName();
@@ -20,10 +22,10 @@ public interface Modifiers {
     }
 
 
-    default void onMine(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity){
+    default void onMine(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity, Random random){
         return;
     }
-    default void onAttack(ItemStack stack, LivingEntity target, LivingEntity attacker){
+    default void onAttack(ItemStack stack, LivingEntity target, LivingEntity attacker, Random random){
         return;
     }
 }

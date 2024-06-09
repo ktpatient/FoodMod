@@ -10,6 +10,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.Random;
+
 public class TestModifier extends LeveledModifier {
     public static final String NAME = "TestModifier";
 
@@ -32,7 +34,7 @@ public class TestModifier extends LeveledModifier {
     }
 
     @Override
-    public void onMine(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity) {
+    public void onMine(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity, Random random) {
         entity.addEffect(new MobEffectInstance(MobEffects.POISON, 10, this.getLevel() - 1));
     }
 }

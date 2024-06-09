@@ -30,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.function.Consumer;
 
 public class Paxel extends DiggerItem {
@@ -39,9 +40,11 @@ public class Paxel extends DiggerItem {
     private static final String MINING_MODIFIER_KEY = "MiningModifier";
     private static final String DURABILITY_MODIFIER_KEY = "DurabilityModifier";
     private static final String MODIFIERS_KEY = "Modifiers";
+    private final Random random;
 
     public Paxel(float damage, float attackSpeed, Tier tier, TagKey<Block> p_204111_, Properties properties) {
         super(damage, attackSpeed, tier, p_204111_, properties);
+        random = new Random();
     }
 
     @Override
@@ -259,7 +262,7 @@ public class Paxel extends DiggerItem {
     @Override
     public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, @NotNull LivingEntity attacker) {
         for (Modifiers modifiers : getModifiers(stack)){
-            modifiers.onAttack(stack, target, attacker);
+            modifiers.onAttack(stack, target, attacker,random);
         }
         return super.hurtEnemy(stack, target, attacker);
     }
@@ -267,7 +270,7 @@ public class Paxel extends DiggerItem {
     @Override
     public boolean mineBlock(@NotNull ItemStack stack, @NotNull Level level, @NotNull BlockState state, @NotNull BlockPos pos, @NotNull LivingEntity entity) {
         for (Modifiers modifiers : getModifiers(stack)){
-            modifiers.onMine(stack, level, state, pos, entity);
+            modifiers.onMine(stack, level, state, pos, entity,random);
         }
         return super.mineBlock(stack, level, state, pos, entity);
     }
