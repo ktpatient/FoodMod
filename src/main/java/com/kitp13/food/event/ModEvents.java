@@ -152,6 +152,13 @@ public class ModEvents {
                 event.setCost(1);
                 event.setMaterialCost(1);
 
+            } else if (rightStack.getItem() == Items.LEATHER){
+                ItemStack output = leftStack.copy();
+                Paxel.setSockets(output,Paxel.getSockets(output)-1);
+                output.setDamageValue(0);
+                event.setOutput(output);
+                event.setCost(1);
+                event.setMaterialCost(1);
             }
         }
     }

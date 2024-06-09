@@ -32,7 +32,7 @@ public class MiningExpModifier extends BooleanModifier {
 
     @Override
     public void onMine(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity, Random random) {
-        if (random.nextInt(10)>5){
+        if (random.nextInt(10)>8){
             ExperienceOrb.award((ServerLevel) level,pos.getCenter(),5);
         }
         super.onMine(stack, level, state, pos, entity, random);
