@@ -7,9 +7,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import org.joml.Vector3f;
 
 public class PaxelRenderer extends BlockEntityWithoutLevelRenderer {
     public PaxelRenderer() {
@@ -19,32 +21,31 @@ public class PaxelRenderer extends BlockEntityWithoutLevelRenderer {
     private static final ResourceLocation PICKAXE_HEAD_TEXTURE = new ResourceLocation("food", "textures/item/pickaxe_head.png");
     private static final ResourceLocation AXE_HEAD_TEXTURE = new ResourceLocation("food", "textures/item/axe_head.png");
     private static final ResourceLocation SHOVEL_HEAD_TEXTURE = new ResourceLocation("food", "textures/item/shovel_head.png");
-
+    private static final ResourceLocation[] BASE_TOOLS_TEXTURES = new ResourceLocation[]{
+            new ResourceLocation("food", "textures/item/paxel.png"),
+            new ResourceLocation("food", "textures/item/paxel01.png"),
+            new ResourceLocation("food", "textures/item/paxel02.png"),
+            new ResourceLocation("food", "textures/item/paxel03.png"),
+            new ResourceLocation("food", "textures/item/paxel04.png"),
+            new ResourceLocation("food", "textures/item/paxel05.png"),
+            new ResourceLocation("food", "textures/item/paxel06.png"),
+            new ResourceLocation("food", "textures/item/paxel07.png"),
+    };
     @Override
     public void renderByItem(ItemStack stack, ItemDisplayContext ctx, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
-        //poseStack.pushPose();
-        //ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-        //BakedModel model = itemRenderer.getModel(stack, null, null, 0);
-        //itemRenderer.render(stack, ctx, false, poseStack, buffer, combinedLight, combinedOverlay, model);
-        //poseStack.popPose();
-        renderOverlay(STICK_TEXTURE,poseStack, buffer, combinedOverlay,combinedLight);
-        if(Paxel.hasCapability(stack,ToolCapabilities.PICKAXE)){
-            renderOverlay(PICKAXE_HEAD_TEXTURE,poseStack, buffer, combinedOverlay,combinedLight);
-        }
-        if(Paxel.hasCapability(stack, ToolCapabilities.AXE)){
-            renderOverlay(AXE_HEAD_TEXTURE,poseStack,buffer,combinedOverlay,combinedLight);
-        }
-        if(Paxel.hasCapability(stack,ToolCapabilities.SHOVEL)){
-            renderOverlay(SHOVEL_HEAD_TEXTURE,poseStack,buffer,combinedOverlay,combinedLight);
-        }
-        //renderOverlay(DIAMOND_TEXTURE,poseStack, buffer, combinedOverlay,combinedLight);
+        renderOverlay(BASE_TOOLS_TEXTURES[Paxel.getToolCapabilities(stack)],poseStack,buffer,combinedOverlay,combinedLight);
     }
     private void renderOverlay(ResourceLocation location, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
         RenderSystem.setShaderTexture(0, location);
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        //RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         RenderSystem.disableCull();
-        VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(location));
+        RenderSystem.setShaderLights(
+                new Vector3f(0.2f, 1.0f, -0.7f).normalize(), // Light direction
+                new Vector3f(-0.2f, 1.0f, 0.7f).normalize()  // Secondary light direction
+        );
 
+        VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(location));
+        int brightLight = 15728880;
         pose.pushPose();
 
         pose.translate(0.5f, 0.5f, 0.5f);
@@ -72,46 +73,48 @@ public class PaxelRenderer extends BlockEntityWithoutLevelRenderer {
                 float vMinFlipped = 1.0f - vMin;
                 float vMaxFlipped = 1.0f - vMax;
 
-                // Front face
-                vertexConsumer.vertex(pose.last().pose(), minX, minY, maxZ).color(255, 255, 255, 255).uv(uMin, vMaxFlipped).overlayCoords(combinedLight).uv2(combinedOverlay).normal(0, 0, 1).endVertex();
-                vertexConsumer.vertex(pose.last().pose(), maxX, minY, maxZ).color(255, 255, 255, 255).uv(uMax, vMaxFlipped).overlayCoords(combinedLight).uv2(combinedOverlay).normal(0, 0, 1).endVertex();
-                vertexConsumer.vertex(pose.last().pose(), maxX, maxY, maxZ).color(255, 255, 255, 255).uv(uMax, vMinFlipped).overlayCoords(combinedLight).uv2(combinedOverlay).normal(0, 0, 1).endVertex();
-                vertexConsumer.vertex(pose.last().pose(), minX, maxY, maxZ).color(255, 255, 255, 255).uv(uMin, vMinFlipped).overlayCoords(combinedLight).uv2(combinedOverlay).normal(0, 0, 1).endVertex();
+                // Front face (counter-clockwise order)
+                vertexConsumer.vertex(pose.last().pose(), minX, minY, maxZ).color(255, 255, 255, 255).uv(uMin, vMaxFlipped).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(brightLight).normal(0, 0, 1).endVertex();
+                vertexConsumer.vertex(pose.last().pose(), maxX, minY, maxZ).color(255, 255, 255, 255).uv(uMax, vMaxFlipped).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(brightLight).normal(0, 0, 1).endVertex();
+                vertexConsumer.vertex(pose.last().pose(), maxX, maxY, maxZ).color(255, 255, 255, 255).uv(uMax, vMinFlipped).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(brightLight).normal(0, 0, 1).endVertex();
+                vertexConsumer.vertex(pose.last().pose(), minX, maxY, maxZ).color(255, 255, 255, 255).uv(uMin, vMinFlipped).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(brightLight).normal(0, 0, 1).endVertex();
 
-                // Back face
-                vertexConsumer.vertex(pose.last().pose(), minX, minY, minZ).color(255, 255, 255, 255).uv(uMin, vMaxFlipped).overlayCoords(combinedLight).uv2(combinedOverlay).normal(0, 0, -1).endVertex();
-                vertexConsumer.vertex(pose.last().pose(), maxX, minY, minZ).color(255, 255, 255, 255).uv(uMax, vMaxFlipped).overlayCoords(combinedLight).uv2(combinedOverlay).normal(0, 0, -1).endVertex();
-                vertexConsumer.vertex(pose.last().pose(), maxX, maxY, minZ).color(255, 255, 255, 255).uv(uMax, vMinFlipped).overlayCoords(combinedLight).uv2(combinedOverlay).normal(0, 0, -1).endVertex();
-                vertexConsumer.vertex(pose.last().pose(), minX, maxY, minZ).color(255, 255, 255, 255).uv(uMin, vMinFlipped).overlayCoords(combinedLight).uv2(combinedOverlay).normal(0, 0, -1).endVertex();
+                // Back face (counter-clockwise order)
+                vertexConsumer.vertex(pose.last().pose(), maxX, minY, minZ).color(255, 255, 255, 255).uv(uMax, vMaxFlipped).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(brightLight).normal(0, 0, -1).endVertex();
+                vertexConsumer.vertex(pose.last().pose(), minX, minY, minZ).color(255, 255, 255, 255).uv(uMin, vMaxFlipped).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(brightLight).normal(0, 0, -1).endVertex();
+                vertexConsumer.vertex(pose.last().pose(), minX, maxY, minZ).color(255, 255, 255, 255).uv(uMin, vMinFlipped).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(brightLight).normal(0, 0, -1).endVertex();
+                vertexConsumer.vertex(pose.last().pose(), maxX, maxY, minZ).color(255, 255, 255, 255).uv(uMax, vMinFlipped).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(brightLight).normal(0, 0, -1).endVertex();
 
-                // Left face
-                vertexConsumer.vertex(pose.last().pose(), minX, minY, minZ).color(255, 255, 255, 255).uv(uMin, vMaxFlipped).overlayCoords(combinedLight).uv2(combinedOverlay).normal(-1, 0, 0).endVertex();
-                vertexConsumer.vertex(pose.last().pose(), minX, minY, maxZ).color(255, 255, 255, 255).uv(uMax, vMaxFlipped).overlayCoords(combinedLight).uv2(combinedOverlay).normal(-1, 0, 0).endVertex();
-                vertexConsumer.vertex(pose.last().pose(), minX, maxY, maxZ).color(255, 255, 255, 255).uv(uMax, vMinFlipped).overlayCoords(combinedLight).uv2(combinedOverlay).normal(-1, 0, 0).endVertex();
-                vertexConsumer.vertex(pose.last().pose(), minX, maxY, minZ).color(255, 255, 255, 255).uv(uMin, vMinFlipped).overlayCoords(combinedLight).uv2(combinedOverlay).normal(-1, 0, 0).endVertex();
+                // Left face (counter-clockwise order)
+                vertexConsumer.vertex(pose.last().pose(), minX, minY, minZ).color(255, 255, 255, 255).uv(uMin, vMaxFlipped).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(brightLight).normal(-1, 0, 0).endVertex();
+                vertexConsumer.vertex(pose.last().pose(), minX, minY, maxZ).color(255, 255, 255, 255).uv(uMax, vMaxFlipped).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(brightLight).normal(-1, 0, 0).endVertex();
+                vertexConsumer.vertex(pose.last().pose(), minX, maxY, maxZ).color(255, 255, 255, 255).uv(uMax, vMinFlipped).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(brightLight).normal(-1, 0, 0).endVertex();
+                vertexConsumer.vertex(pose.last().pose(), minX, maxY, minZ).color(255, 255, 255, 255).uv(uMin, vMinFlipped).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(brightLight).normal(-1, 0, 0).endVertex();
 
-                // Right face
-                vertexConsumer.vertex(pose.last().pose(), maxX, minY, minZ).color(255, 255, 255, 255).uv(uMin, vMaxFlipped).overlayCoords(combinedLight).uv2(combinedOverlay).normal(1, 0, 0).endVertex();
-                vertexConsumer.vertex(pose.last().pose(), maxX, minY, maxZ).color(255, 255, 255, 255).uv(uMax, vMaxFlipped).overlayCoords(combinedLight).uv2(combinedOverlay).normal(1, 0, 0).endVertex();
-                vertexConsumer.vertex(pose.last().pose(), maxX, maxY, maxZ).color(255, 255, 255, 255).uv(uMax, vMinFlipped).overlayCoords(combinedLight).uv2(combinedOverlay).normal(1, 0, 0).endVertex();
-                vertexConsumer.vertex(pose.last().pose(), maxX, maxY, minZ).color(255, 255, 255, 255).uv(uMin, vMinFlipped).overlayCoords(combinedLight).uv2(combinedOverlay).normal(1, 0, 0).endVertex();
+                // Right face (counter-clockwise order)
+                vertexConsumer.vertex(pose.last().pose(), maxX, minY, maxZ).color(255, 255, 255, 255).uv(uMax, vMaxFlipped).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(brightLight).normal(1, 0, 0).endVertex();
+                vertexConsumer.vertex(pose.last().pose(), maxX, minY, minZ).color(255, 255, 255, 255).uv(uMin, vMaxFlipped).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(brightLight).normal(1, 0, 0).endVertex();
+                vertexConsumer.vertex(pose.last().pose(), maxX, maxY, minZ).color(255, 255, 255, 255).uv(uMin, vMinFlipped).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(brightLight).normal(1, 0, 0).endVertex();
+                vertexConsumer.vertex(pose.last().pose(), maxX, maxY, maxZ).color(255, 255, 255, 255).uv(uMax, vMinFlipped).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(brightLight).normal(1, 0, 0).endVertex();
 
-                // Top face
-                vertexConsumer.vertex(pose.last().pose(), minX, maxY, minZ).color(255, 255, 255, 255).uv(uMin, vMaxFlipped).overlayCoords(combinedLight).uv2(combinedOverlay).normal(0, 1, 0).endVertex();
-                vertexConsumer.vertex(pose.last().pose(), minX, maxY, maxZ).color(255, 255, 255, 255).uv(uMax, vMaxFlipped).overlayCoords(combinedLight).uv2(combinedOverlay).normal(0, 1, 0).endVertex();
-                vertexConsumer.vertex(pose.last().pose(), maxX, maxY, maxZ).color(255, 255, 255, 255).uv(uMax, vMinFlipped).overlayCoords(combinedLight).uv2(combinedOverlay).normal(0, 1, 0).endVertex();
-                vertexConsumer.vertex(pose.last().pose(), maxX, maxY, minZ).color(255, 255, 255, 255).uv(uMin, vMinFlipped).overlayCoords(combinedLight).uv2(combinedOverlay).normal(0, 1, 0).endVertex();
+                // Bottom face (counter-clockwise order)
+                vertexConsumer.vertex(pose.last().pose(), minX, minY, minZ).color(255, 255, 255, 255).uv(uMin, vMaxFlipped).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(brightLight).normal(0, -1, 0).endVertex();
+                vertexConsumer.vertex(pose.last().pose(), maxX, minY, minZ).color(255, 255, 255, 255).uv(uMax, vMaxFlipped).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(brightLight).normal(0, -1, 0).endVertex();
+                vertexConsumer.vertex(pose.last().pose(), maxX, minY, maxZ).color(255, 255, 255, 255).uv(uMax, vMinFlipped).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(brightLight).normal(0, -1, 0).endVertex();
+                vertexConsumer.vertex(pose.last().pose(), minX, minY, maxZ).color(255, 255, 255, 255).uv(uMin, vMinFlipped).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(brightLight).normal(0, -1, 0).endVertex();
 
-                // Bottom face
-                vertexConsumer.vertex(pose.last().pose(), minX, minY, minZ).color(255, 255, 255, 255).uv(uMin, vMaxFlipped).overlayCoords(combinedLight).uv2(combinedOverlay).normal(0, -1, 0).endVertex();
-                vertexConsumer.vertex(pose.last().pose(), minX, minY, maxZ).color(255, 255, 255, 255).uv(uMax, vMaxFlipped).overlayCoords(combinedLight).uv2(combinedOverlay).normal(0, -1, 0).endVertex();
-                vertexConsumer.vertex(pose.last().pose(), maxX, minY, maxZ).color(255, 255, 255, 255).uv(uMax, vMinFlipped).overlayCoords(combinedLight).uv2(combinedOverlay).normal(0, -1, 0).endVertex();
-                vertexConsumer.vertex(pose.last().pose(), maxX, minY, minZ).color(255, 255, 255, 255).uv(uMin, vMinFlipped).overlayCoords(combinedLight).uv2(combinedOverlay).normal(0, -1, 0).endVertex();
+                // Top face (counter-clockwise order)
+                vertexConsumer.vertex(pose.last().pose(), minX, maxY, maxZ).color(255, 255, 255, 255).uv(uMin, vMaxFlipped).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(brightLight).normal(0, 1, 0).endVertex();
+                vertexConsumer.vertex(pose.last().pose(), maxX, maxY, maxZ).color(255, 255, 255, 255).uv(uMax, vMaxFlipped).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(brightLight).normal(0, 1, 0).endVertex();
+                vertexConsumer.vertex(pose.last().pose(), maxX, maxY, minZ).color(255, 255, 255, 255).uv(uMax, vMinFlipped).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(brightLight).normal(0, 1, 0).endVertex();
+                vertexConsumer.vertex(pose.last().pose(), minX, maxY, minZ).color(255, 255, 255, 255).uv(uMin, vMinFlipped).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(brightLight).normal(0, 1, 0).endVertex();
+
             }
+
         }
 
         pose.popPose();
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        //RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 
         RenderSystem.enableCull();
 
