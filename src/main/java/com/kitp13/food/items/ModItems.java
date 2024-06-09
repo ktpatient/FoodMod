@@ -36,6 +36,11 @@ public class ModItems {
 
     // Tools
     public static RegistryObject<Item> PAXEL;
+      // Modifiers
+        public static RegistryObject<Item> MODIFIER_BRITTLE;
+        public static RegistryObject<Item> MODIFIER_VAMPIRIC;
+        public static RegistryObject<Item> MODIFIER_EXP;
+        public static RegistryObject<Item> PAXEL_REPAIR;
 
     public static void register(IEventBus bus){
         TOMATO_FRUIT          = genericFood("tomato");
@@ -91,6 +96,11 @@ public class ModItems {
 
         PAXEL = ITEMS.register("paxel", ()->new Paxel(5.0f,-3.0f, Tiers.CAXE, BlockTags.MINEABLE_WITH_PICKAXE, new Item.Properties()));
 
+        MODIFIER_BRITTLE = genericItem("modifier_brittle");
+        MODIFIER_VAMPIRIC = genericItem("modifier_vampiric");
+        MODIFIER_EXP = genericItem("modifier_exp");
+        PAXEL_REPAIR = genericItem("paxel_repair");
+
         ITEMS.register(bus);
     }
     public static RegistryObject<Item> genericFood(String name){
@@ -98,5 +108,8 @@ public class ModItems {
     }
     public static Supplier<Item> genericFood(){
         return () -> new FoodItem(new Item.Properties(),4,0.3f);
+    }
+    public static RegistryObject<Item> genericItem(String name){
+        return ITEMS.register(name ,()-> new Item(new Item.Properties()));
     }
 }

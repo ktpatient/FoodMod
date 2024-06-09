@@ -128,7 +128,7 @@ public class ModEvents {
                 event.setCost(1);
                 event.setMaterialCost(1);
 
-            } else if (rightStack.getItem() == Items.SAND && !Paxel.hasModifier(leftStack, BrittleModifier.NAME)) {
+            } else if (rightStack.getItem() == ModItems.MODIFIER_BRITTLE.get() && !Paxel.hasModifier(leftStack, BrittleModifier.NAME)) {
                 ItemStack output = leftStack.copy();
                 Paxel.setSockets(output,Paxel.getSockets(output)-1);
                 Paxel.addModifier(output, new BrittleModifier());
@@ -136,7 +136,7 @@ public class ModEvents {
                 event.setCost(1);
                 event.setMaterialCost(1);
 
-            } else if (rightStack.getItem() == Items.RED_DYE && !Paxel.hasModifier(leftStack, VampiricModifier.NAME)) {
+            } else if (rightStack.getItem() == ModItems.MODIFIER_VAMPIRIC.get() && !Paxel.hasModifier(leftStack, VampiricModifier.NAME)) {
                 ItemStack output = leftStack.copy();
                 Paxel.setSockets(output,Paxel.getSockets(output)-1);
                 Paxel.addModifier(output, new VampiricModifier());
@@ -144,7 +144,7 @@ public class ModEvents {
                 event.setCost(1);
                 event.setMaterialCost(1);
 
-            } else if (rightStack.getItem() == Items.EXPERIENCE_BOTTLE && !Paxel.hasModifier(leftStack, MiningExpModifier.NAME)) {
+            } else if (rightStack.getItem() == ModItems.MODIFIER_EXP.get() && !Paxel.hasModifier(leftStack, MiningExpModifier.NAME)) {
                 ItemStack output = leftStack.copy();
                 Paxel.setSockets(output,Paxel.getSockets(output)-1);
                 Paxel.addModifier(output, new MiningExpModifier());
@@ -152,7 +152,7 @@ public class ModEvents {
                 event.setCost(1);
                 event.setMaterialCost(1);
 
-            } else if (rightStack.getItem() == Items.LEATHER){
+            } else if (rightStack.getItem() == ModItems.PAXEL_REPAIR.get()){
                 ItemStack output = leftStack.copy();
                 Paxel.setSockets(output,Paxel.getSockets(output)-1);
                 output.setDamageValue(0);

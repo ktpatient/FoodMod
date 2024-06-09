@@ -176,35 +176,12 @@ public class Paxel extends DiggerItem {
                 CompoundTag modifierTag = modifiersList.getCompound(i);
                 String type = modifierTag.getString("Type");
 
-                /*
-                Ideally it would be something like this:
-                (Instead of manually doing it all)
-
-                Modifiers Modifier = getModifierByName(type);
-
-                if (Modifier instanceof LeveledModifier) {
-                    modifiers.add(new Modifier(modifierTag.getInt("Level")));
-                } else if (Modifier instanceof BooleanModifier) {
-                    modifiers.add(new Modifier)
-                }
-                */
-
                 if (ModifiersRegistry.MODIFIERS_MAP.get(type) instanceof BooleanModifier){
                     modifiers.add(ModifiersRegistry.MODIFIERS_MAP.get(type));
                 } else if (ModifiersRegistry.MODIFIERS_MAP.get(type) instanceof LeveledModifier modifier){
                     modifier.setLevel(modifierTag.getInt("Level"));
                     modifiers.add(modifier);
                 }
-
-/*
-                if (type.equals(TestModifier.NAME)){
-                    modifiers.add(new TestModifier(modifierTag.getInt("Level")));
-                } else if (type.equals(BrittleModifier.NAME)){
-                    modifiers.add(new BrittleModifier());
-                } else if (type.equals(VampiricModifier.NAME)){
-                    modifiers.add(new VampiricModifier());
-                }
-                */
             }
         }
         return modifiers;

@@ -3,7 +3,6 @@ package com.kitp13.food.items.tools;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -15,7 +14,8 @@ import org.joml.Vector3f;
 
 public class PaxelRenderer extends BlockEntityWithoutLevelRenderer {
     public PaxelRenderer() {
-        super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
+        super(null,null);
+        //super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
     }
     private static final ResourceLocation STICK_TEXTURE = new ResourceLocation("minecraft", "textures/item/stick.png");
     private static final ResourceLocation PICKAXE_HEAD_TEXTURE = new ResourceLocation("food", "textures/item/pickaxe_head.png");

@@ -71,7 +71,11 @@ public class ItemModelGenerator extends ItemModelProvider {
         generateItemModel("watermelon_slice2");
         generateItemModel("watermelon_whole");
 
-        generateEntityItemModel("paxel");
+        // generateEntityItemModel("paxel");
+        generateItemModel("modifier_brittle");
+        generateItemModel("modifier_vampiric");
+        generateItemModel("modifier_exp");
+        generateItemModel("paxel_repair", "repair");
     }
     private void generateItemModel(String name){
         generateItemModel(name,name);
