@@ -7,6 +7,8 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -36,5 +38,10 @@ public class TestModifier extends LeveledModifier {
     @Override
     public void onMine(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity, Random random) {
         entity.addEffect(new MobEffectInstance(MobEffects.POISON, 10, this.getLevel() - 1));
+    }
+
+    @Override
+    public ItemLike applyMaterial() {
+        return Items.DIAMOND;
     }
 }

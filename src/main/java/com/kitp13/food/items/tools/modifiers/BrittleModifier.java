@@ -1,11 +1,13 @@
 package com.kitp13.food.items.tools.modifiers;
 
+import com.kitp13.food.items.ModItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -32,5 +34,10 @@ public class BrittleModifier extends BooleanModifier{
     @Override
     public void onMine(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity, Random random) {
         stack.hurtAndBreak(3,entity, (e) -> e.broadcastBreakEvent(e.getUsedItemHand()));
+    }
+
+    @Override
+    public ItemLike applyMaterial() {
+        return ModItems.MODIFIER_BRITTLE.get();
     }
 }

@@ -19,8 +19,9 @@ public class LeveledModifier implements Modifiers{
     public int getLevel(){
         return level;
     }
-    public void setLevel(int value){
+    public Modifiers setLevel(int value){
         this.level = value;
+        return this;
     }
     @Override
     public String getName() {

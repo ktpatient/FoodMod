@@ -10,8 +10,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -23,6 +22,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
+import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = Main.MODID)
 public class ModEvents {
@@ -68,98 +68,92 @@ public class ModEvents {
     public static void onAnvilUpdate(AnvilUpdateEvent event) {
         ItemStack leftStack = event.getLeft();
         ItemStack rightStack = event.getRight();
-        if (leftStack.getItem() instanceof Paxel) {
-            if (Paxel.getSockets(leftStack)<=0) {
+        if (!(leftStack.getItem() instanceof Paxel)) {
+            return;
+        }
+        if (Paxel.getSockets(leftStack) <= 0){
+            return;
+        }
 
-            } else if (rightStack.getItem() == Items.WOODEN_AXE && !Paxel.hasCapability(leftStack, ToolCapabilities.AXE)) {
-                int combinedCapabilities = Paxel.getToolCapabilities(leftStack) | ToolCapabilities.AXE.getBit();
-                ItemStack output = leftStack.copy();
-                Paxel.setToolCapabilities(output, combinedCapabilities);
-                Paxel.setSockets(output,Paxel.getSockets(output)-1);
-                event.setOutput(output);
-                event.setCost(1);
-
-            } else if (rightStack.getItem() == Items.WOODEN_PICKAXE && !Paxel.hasCapability(leftStack, ToolCapabilities.PICKAXE)) {
-                int combinedCapabilities = Paxel.getToolCapabilities(leftStack) | ToolCapabilities.PICKAXE.getBit();
-                ItemStack output = leftStack.copy();
-                Paxel.setToolCapabilities(output, combinedCapabilities);
-                Paxel.setSockets(output,Paxel.getSockets(output)-1);
-                event.setOutput(output);
-                event.setCost(1);
-
-            } else if (rightStack.getItem() == Items.WOODEN_SHOVEL && !Paxel.hasCapability(leftStack, ToolCapabilities.SHOVEL)) {
-                int combinedCapabilities = Paxel.getToolCapabilities(leftStack) | ToolCapabilities.SHOVEL.getBit();
-                ItemStack output = leftStack.copy();
-                Paxel.setToolCapabilities(output, combinedCapabilities);
-                Paxel.setSockets(output,Paxel.getSockets(output)-1);
-                event.setOutput(output);
-                event.setCost(1);
-
-            } else if (rightStack.getItem() == Items.REDSTONE_BLOCK){
-                float currentSpeed = Paxel.getMiningSpeedModifier(leftStack);
-                ItemStack output = leftStack.copy();
-                Paxel.setMiningSpeedModifier(output, currentSpeed + 2.5f);
-                Paxel.setSockets(output,Paxel.getSockets(output)-1);
-                event.setOutput(output);
-                event.setCost(1);
-                event.setMaterialCost(1);
-
-            } else if (rightStack.getItem() == Items.OBSIDIAN) {
-                int currentModifier = Paxel.getDurabilityModifier(leftStack);
-                ItemStack output = leftStack.copy();
-                Paxel.setDurabilityModifier(output, currentModifier + 256);
-                Paxel.setSockets(output,Paxel.getSockets(output)-1);
-                event.setOutput(output);
-                event.setCost(1);
-                event.setMaterialCost(1);
-
-            } else if (rightStack.getItem() == Items.DIAMOND) {
-                ItemStack output = leftStack.copy();
-                Paxel.setSockets(output,Paxel.getSockets(output)-1);
-                int currentLevel = 0;
-                for (Modifiers modifiers : Paxel.getModifiers(output)){
-                    if(modifiers instanceof TestModifier modifier){
-                        currentLevel+=modifier.getLevel();
-                        Paxel.removeModifier(output, modifier);
+        for (Modifiers modifiers : ModifiersRegistry.MODIFIERS_MAP.values()) {
+            if (rightStack.getItem() == modifiers.applyMaterial()) {
+                if (modifiers instanceof BooleanModifier && !Paxel.hasModifier(leftStack, modifiers.getName())) {
+                    ItemStack output = leftStack.copy();
+                    Paxel.setSockets(output, Paxel.getSockets(output) - 1);
+                    Paxel.addModifier(output, modifiers);
+                    event.setOutput(output);
+                    event.setCost(1);
+                    event.setMaterialCost(1);
+                } else if (modifiers instanceof LeveledModifier leveledModifier) {
+                    ItemStack output = leftStack.copy();
+                    Paxel.setSockets(output, Paxel.getSockets(output) - 1);
+                    int currentLevel = 0;
+                    for (Modifiers modifier : Paxel.getModifiers(output)) {
+                        if (Objects.equals(modifier.getName(), leveledModifier.getName())) {
+                            currentLevel += leveledModifier.getLevel();
+                            Paxel.removeModifier(output, modifier);
+                        }
                     }
+                    leveledModifier.setLevel(currentLevel + 1);
+                    Paxel.addModifier(output, leveledModifier.setLevel(currentLevel + 1));
+                    event.setOutput(output);
+                    event.setCost(1);
+                    event.setMaterialCost(1);
+                } else {
+                    // Main.LOGGER.error("Error Parsing Modifier");
                 }
-                Paxel.addModifier(output, new TestModifier(currentLevel+1));
-                event.setOutput(output);
-                event.setCost(1);
-                event.setMaterialCost(1);
-
-            } else if (rightStack.getItem() == ModItems.MODIFIER_BRITTLE.get() && !Paxel.hasModifier(leftStack, BrittleModifier.NAME)) {
-                ItemStack output = leftStack.copy();
-                Paxel.setSockets(output,Paxel.getSockets(output)-1);
-                Paxel.addModifier(output, new BrittleModifier());
-                event.setOutput(output);
-                event.setCost(1);
-                event.setMaterialCost(1);
-
-            } else if (rightStack.getItem() == ModItems.MODIFIER_VAMPIRIC.get() && !Paxel.hasModifier(leftStack, VampiricModifier.NAME)) {
-                ItemStack output = leftStack.copy();
-                Paxel.setSockets(output,Paxel.getSockets(output)-1);
-                Paxel.addModifier(output, new VampiricModifier());
-                event.setOutput(output);
-                event.setCost(1);
-                event.setMaterialCost(1);
-
-            } else if (rightStack.getItem() == ModItems.MODIFIER_EXP.get() && !Paxel.hasModifier(leftStack, MiningExpModifier.NAME)) {
-                ItemStack output = leftStack.copy();
-                Paxel.setSockets(output,Paxel.getSockets(output)-1);
-                Paxel.addModifier(output, new MiningExpModifier());
-                event.setOutput(output);
-                event.setCost(1);
-                event.setMaterialCost(1);
-
-            } else if (rightStack.getItem() == ModItems.PAXEL_REPAIR.get()){
-                ItemStack output = leftStack.copy();
-                Paxel.setSockets(output,Paxel.getSockets(output)-1);
-                output.setDamageValue(0);
-                event.setOutput(output);
-                event.setCost(1);
-                event.setMaterialCost(1);
             }
+        }
+
+        if (rightStack.getItem() instanceof AxeItem && !Paxel.hasCapability(leftStack, ToolCapabilities.AXE)) {
+            int combinedCapabilities = Paxel.getToolCapabilities(leftStack) | ToolCapabilities.AXE.getBit();
+            ItemStack output = leftStack.copy();
+            Paxel.setToolCapabilities(output, combinedCapabilities);
+            Paxel.setSockets(output, Paxel.getSockets(output) - 1);
+            event.setOutput(output);
+            event.setCost(1);
+
+        } else if (rightStack.getItem() instanceof PickaxeItem && !Paxel.hasCapability(leftStack, ToolCapabilities.PICKAXE)) {
+            int combinedCapabilities = Paxel.getToolCapabilities(leftStack) | ToolCapabilities.PICKAXE.getBit();
+            ItemStack output = leftStack.copy();
+            Paxel.setToolCapabilities(output, combinedCapabilities);
+            Paxel.setSockets(output, Paxel.getSockets(output) - 1);
+            event.setOutput(output);
+            event.setCost(1);
+
+        } else if (rightStack.getItem() instanceof ShovelItem && !Paxel.hasCapability(leftStack, ToolCapabilities.SHOVEL)) {
+            int combinedCapabilities = Paxel.getToolCapabilities(leftStack) | ToolCapabilities.SHOVEL.getBit();
+            ItemStack output = leftStack.copy();
+            Paxel.setToolCapabilities(output, combinedCapabilities);
+            Paxel.setSockets(output, Paxel.getSockets(output) - 1);
+            event.setOutput(output);
+            event.setCost(1);
+
+        } else if (rightStack.getItem() == Items.REDSTONE_BLOCK) {
+            float currentSpeed = Paxel.getMiningSpeedModifier(leftStack);
+            ItemStack output = leftStack.copy();
+            Paxel.setMiningSpeedModifier(output, currentSpeed + 2.5f);
+            Paxel.setSockets(output, Paxel.getSockets(output) - 1);
+            event.setOutput(output);
+            event.setCost(1);
+            event.setMaterialCost(1);
+
+        } else if (rightStack.getItem() == Items.OBSIDIAN) {
+            int currentModifier = Paxel.getDurabilityModifier(leftStack);
+            ItemStack output = leftStack.copy();
+            Paxel.setDurabilityModifier(output, currentModifier + 256);
+            Paxel.setSockets(output, Paxel.getSockets(output) - 1);
+            event.setOutput(output);
+            event.setCost(1);
+            event.setMaterialCost(1);
+
+        } else if (rightStack.getItem() == ModItems.PAXEL_REPAIR.get()) {
+            ItemStack output = leftStack.copy();
+            Paxel.setSockets(output, Paxel.getSockets(output) - 1);
+            output.setDamageValue(0);
+            event.setOutput(output);
+            event.setCost(1);
+            event.setMaterialCost(1);
         }
     }
 }

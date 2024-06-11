@@ -1,5 +1,6 @@
 package com.kitp13.food.items.tools.modifiers;
 
+import com.kitp13.food.items.ModItems;
 import com.kitp13.food.library.chat.Components;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -9,6 +10,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -37,5 +39,10 @@ public class MiningExpModifier extends BooleanModifier {
             ExperienceOrb.award((ServerLevel) level,pos.getCenter(),5);
         }
         super.onMine(stack, level, state, pos, entity, random);
+    }
+
+    @Override
+    public ItemLike applyMaterial() {
+        return ModItems.MODIFIER_EXP.get();
     }
 }
