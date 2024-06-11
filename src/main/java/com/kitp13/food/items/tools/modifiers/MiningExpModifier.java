@@ -1,5 +1,6 @@
 package com.kitp13.food.items.tools.modifiers;
 
+import com.kitp13.food.library.chat.Components;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -27,7 +28,7 @@ public class MiningExpModifier extends BooleanModifier {
 
     @Override
     public MutableComponent shiftTooltip(ItemStack stack) {
-        return Component.empty().append(this.tooltip(stack)).append(Component.literal(" Shift Description").withStyle(ChatFormatting.AQUA));
+        return Components.ColoredPart(this.tooltip(stack)," Shift Description", ChatFormatting.AQUA);
     }
 
     @Override

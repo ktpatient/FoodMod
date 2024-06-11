@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 public class PaxelRenderer extends BlockEntityWithoutLevelRenderer {
@@ -32,7 +33,7 @@ public class PaxelRenderer extends BlockEntityWithoutLevelRenderer {
             new ResourceLocation("food", "textures/item/paxel07.png"),
     };
     @Override
-    public void renderByItem(ItemStack stack, ItemDisplayContext ctx, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
+    public void renderByItem(@NotNull ItemStack stack, @NotNull ItemDisplayContext ctx, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
         renderOverlay(BASE_TOOLS_TEXTURES[Paxel.getToolCapabilities(stack)],poseStack,buffer,combinedOverlay,combinedLight);
     }
     private void renderOverlay(ResourceLocation location, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {

@@ -2,6 +2,7 @@ package com.kitp13.food.items.tools;
 
 import com.kitp13.food.Main;
 import com.kitp13.food.items.tools.modifiers.*;
+import com.kitp13.food.library.chat.Components;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -189,19 +190,19 @@ public class Paxel extends DiggerItem {
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level p_41422_, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
         super.appendHoverText(stack, p_41422_, tooltip, flag);
-        tooltip.add(Component.empty().append(Component.literal("Sockets: ")).append(Component.literal(""+getSockets(stack)).withStyle(ChatFormatting.BLUE)));
+        tooltip.add(Components.ColoredPart("Sockets: ", getSockets(stack),ChatFormatting.BLUE));
         if (hasCapability(stack, ToolCapabilities.PICKAXE)){
-            tooltip.add(Component.empty().append(Component.literal("Works as Tool: ")).append(Component.literal("PICKAXE").withStyle(ChatFormatting.BLUE)));
+            tooltip.add(Components.ColoredPart("Works as Tool: ", "PICKAXE", ChatFormatting.BLUE));
         }
         if (hasCapability(stack, ToolCapabilities.AXE)){
-            tooltip.add(Component.empty().append(Component.literal("Works as Tool: ")).append(Component.literal("AXE").withStyle(ChatFormatting.BLUE)));
+            tooltip.add(Components.ColoredPart("Works as Tool: ", "AXE", ChatFormatting.BLUE));
         }
         if (hasCapability(stack, ToolCapabilities.SHOVEL)){
-            tooltip.add(Component.empty().append(Component.literal("Works as Tool: ")).append(Component.literal("SHOVEL").withStyle(ChatFormatting.BLUE)));
+            tooltip.add(Components.ColoredPart("Works as Tool: ", "SHOVEL", ChatFormatting.BLUE));
         }
-        Component.empty().append(Component.literal("Mining Speed Modifier: ")).append(Component.literal(""+getMiningSpeedModifier(stack)).withStyle(ChatFormatting.BLUE));
-        tooltip.add(Component.empty().append(Component.literal("Mining Speed Modifier: ")).append(Component.literal(""+getMiningSpeedModifier(stack)).withStyle(ChatFormatting.BLUE)));
-        tooltip.add(Component.empty().append(Component.literal("Durability Modifier: ")).append(Component.literal(""+getDurabilityModifier(stack)).withStyle(ChatFormatting.BLUE)));
+        tooltip.add(Components.ColoredPart("Mining Speed Modifier: ", getMiningSpeedModifier(stack), ChatFormatting.BLUE));
+        tooltip.add(Components.ColoredPart("Durability Modifier: ", getDurabilityModifier(stack), ChatFormatting.BLUE));
+
         List<Modifiers> modifiersList = getModifiers(stack);
         if (!modifiersList.isEmpty()){
             tooltip.add(Component.empty().append(Component.literal("Modifiers: ")));

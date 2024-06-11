@@ -5,6 +5,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -20,7 +22,7 @@ public interface Modifiers {
     default MutableComponent shiftTooltip(ItemStack stack){
         return Component.literal("");
     }
-
+    default ItemLike applyMaterial(){return Items.SAND;}
 
     default void onMine(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity, Random random){
         return;

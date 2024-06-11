@@ -5,6 +5,7 @@ import com.kitp13.food.entity.blocks.renderer.ChoppingBoardRenderer;
 import com.kitp13.food.entity.blocks.renderer.PotBlockRenderer;
 import com.kitp13.food.fluid.ModFluids;
 import com.kitp13.food.items.ModItems;
+import com.kitp13.food.items.tools.modifiers.*;
 import com.kitp13.food.tab.FoodTab;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -19,6 +20,12 @@ public class Main {
     public static final String MODID = "food";
     public static final Logger LOGGER = LogManager.getLogger(MODID);
     public Main(){
+
+        ModifiersRegistry.RegisterModifier(BrittleModifier.NAME, new BrittleModifier());
+        ModifiersRegistry.RegisterModifier(VampiricModifier.NAME, new VampiricModifier());
+        ModifiersRegistry.RegisterModifier(TestModifier.NAME, new TestModifier());
+        ModifiersRegistry.RegisterModifier(MiningExpModifier.NAME, new MiningExpModifier());
+
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(this::renderEvent);
         ModFluids.register(bus);
