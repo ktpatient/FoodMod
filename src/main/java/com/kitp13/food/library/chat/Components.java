@@ -5,7 +5,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
 public class Components {
-    private static Component ColoredText(String text, ChatFormatting color){
+    public static MutableComponent ColoredText(String text, ChatFormatting color){
         return Component.literal(text).withStyle(color);
     }
     private static Component ColoredText(int num, ChatFormatting color){

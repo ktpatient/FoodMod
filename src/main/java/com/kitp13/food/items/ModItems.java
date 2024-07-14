@@ -2,6 +2,10 @@ package com.kitp13.food.items;
 
 import com.kitp13.food.Main;
 import com.kitp13.food.blocks.ModBlocks;
+import com.kitp13.food.items.tea.CactusTea;
+import com.kitp13.food.items.tea.EffectTea;
+import com.kitp13.food.items.tea.RoseTea;
+import com.kitp13.food.items.tea.SugarCaneTea;
 import com.kitp13.food.items.tools.Paxel;
 import com.kitp13.food.items.tools.Tiers;
 import com.kitp13.food.library.items.FoodItem;
@@ -41,6 +45,12 @@ public class ModItems {
         public static RegistryObject<Item> MODIFIER_VAMPIRIC;
         public static RegistryObject<Item> MODIFIER_EXP;
         public static RegistryObject<Item> PAXEL_REPAIR;
+
+    public static RegistryObject<Item> CACTUS_TEA = ITEMS.register("cactus_tea", ()-> new CactusTea(new Item.Properties()));
+    public static RegistryObject<Item> ROSE_TEA = ITEMS.register("rose_tea", ()->new RoseTea(new Item.Properties()));
+    public static RegistryObject<Item> SUGAR_CANE_TEA = ITEMS.register("sugar_cane_tea", ()->new SugarCaneTea(new Item.Properties()));
+    public static RegistryObject<Item> TEA = ITEMS.register("tea", ()->new EffectTea(new Item.Properties()));
+    public static RegistryObject<Item> WATER_TEA = ITEMS.register("water_tea", ()->new EffectTea(new Item.Properties()));
 
     public static void register(IEventBus bus){
         TOMATO_FRUIT          = genericFood("tomato");

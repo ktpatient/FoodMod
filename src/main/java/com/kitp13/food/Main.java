@@ -1,7 +1,9 @@
 package com.kitp13.food;
 
 import com.kitp13.food.blocks.ModBlocks;
+import com.kitp13.food.entity.blocks.PedestalBlockEntity;
 import com.kitp13.food.entity.blocks.renderer.ChoppingBoardRenderer;
+import com.kitp13.food.entity.blocks.renderer.PedestalBlockRenderer;
 import com.kitp13.food.entity.blocks.renderer.PotBlockRenderer;
 import com.kitp13.food.fluid.ModFluids;
 import com.kitp13.food.items.ModItems;
@@ -40,5 +42,6 @@ public class Main {
     private void renderEvent(EntityRenderersEvent.RegisterRenderers event){
         event.registerBlockEntityRenderer(ModBlocks.POT_TILE_ENTITY.get(), PotBlockRenderer::new);
         event.registerBlockEntityRenderer(ModBlocks.CHOPPING_BOARD_ENTITY.get(), ChoppingBoardRenderer::new);
+        event.registerBlockEntityRenderer(ModBlocks.PEDESTAL_BLOCK_ENTITY.get(), PedestalBlockRenderer::new);
     }
 }

@@ -76,6 +76,12 @@ public class ItemModelGenerator extends ItemModelProvider {
         generateItemModel("modifier_vampiric");
         generateItemModel("modifier_exp");
         generateItemModel("paxel_repair", "repair");
+        generateItemModel("cactus_tea");
+        generateItemModel("empty_tea");
+        generateItemModel("rose_tea");
+        generateItemModel("sugar_cane_tea");
+        generateItemModel("tea");
+        generateItemModel("water_tea");
     }
     private void generateItemModel(String name){
         generateItemModel(name,name);

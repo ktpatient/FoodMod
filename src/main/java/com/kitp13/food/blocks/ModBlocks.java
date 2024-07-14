@@ -6,10 +6,7 @@ import com.kitp13.food.blocks.crops.PineappleCropBlock;
 import com.kitp13.food.blocks.crops.TomatoCropBlock;
 import com.kitp13.food.blocks.pizza.PineapplePizzaBlock;
 import com.kitp13.food.blocks.pizza.PizzaBlock;
-import com.kitp13.food.entity.blocks.BerryBushEntity;
-import com.kitp13.food.entity.blocks.ChoppingBoardEntity;
-import com.kitp13.food.entity.blocks.PizzaBlockTileEntity;
-import com.kitp13.food.entity.blocks.PotBlockEntity;
+import com.kitp13.food.entity.blocks.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -37,6 +34,9 @@ public class ModBlocks {
     public static final RegistryObject<Block> TOMATO_CROP_BLOCK = BLOCKS.register("tomato_crop_block", ()->new TomatoCropBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT)));
     public static final RegistryObject<Block> PINEAPPLE_CROP_BLOCK = BLOCKS.register("pineapple_crop_block", ()->new PineappleCropBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT)));
 
+    public static final RegistryObject<Block> TILES = BLOCKS.register("tiles", ()->new Block(BlockBehaviour.Properties.copy(Blocks.CAULDRON)));
+    public static final RegistryObject<BlockItem> TILES_BLOCK_ITEM = ITEM_BLOCKS.register("tiles", ()->new BlockItem(TILES.get(), new Item.Properties()));
+
 
     public static final RegistryObject<BlockEntityType<PotBlockEntity>> POT_TILE_ENTITY = BLOCK_ENTITY.register("pot_be", ()->BlockEntityType.Builder.of(PotBlockEntity::new, ModBlocks.POT_BLOCK.get()).build(null));
     public static final RegistryObject<Block> POT_BLOCK = BLOCKS.register("pot_block", PotBlock::new);
@@ -49,6 +49,11 @@ public class ModBlocks {
     public static final RegistryObject<Block> BERRY_BUSH_BLOCK = BLOCKS.register("berry_bush", ()->new BerryBush(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD)));
     public static final RegistryObject<BlockItem> BERRY_BUSH_BLOCK_ITEM = ITEM_BLOCKS.register("berry_bush", ()->new BlockItem(BERRY_BUSH_BLOCK.get(), new Item.Properties()));
     public static final RegistryObject<BlockEntityType<BerryBushEntity>> BERRY_BUSH_ENTITY = BLOCK_ENTITY.register("berry_bush_be", ()->BlockEntityType.Builder.of(BerryBushEntity::new, ModBlocks.BERRY_BUSH_BLOCK.get()).build(null));
+
+    public static final RegistryObject<Block> PEDESTAL_BLOCK = BLOCKS.register("pedestal_block", ()-> new PedestalBlock(BlockBehaviour.Properties.copy(Blocks.CAULDRON)));
+    public static final RegistryObject<BlockItem> PEDESTAL_BLOCK_ITEM = ITEM_BLOCKS.register("pedestal_block", ()->new BlockItem(PEDESTAL_BLOCK.get(), new Item.Properties()));
+    public static final RegistryObject<BlockEntityType<PedestalBlockEntity>> PEDESTAL_BLOCK_ENTITY = BLOCK_ENTITY.register("pedestal_block_be", ()->BlockEntityType.Builder.of(PedestalBlockEntity::new, ModBlocks.PEDESTAL_BLOCK.get()).build(null));
+
 
     public static void register(IEventBus bus){
         BLOCKS.register(bus);

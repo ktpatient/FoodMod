@@ -1,9 +1,9 @@
 package com.kitp13.food.items.tools.modifiers;
 
 import com.kitp13.food.items.ModItems;
+import com.kitp13.food.library.chat.Components;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -23,12 +23,14 @@ public class BrittleModifier extends BooleanModifier{
 
     @Override
     public MutableComponent tooltip(ItemStack stack) {
-        return Component.literal("Brittle").withStyle(ChatFormatting.GREEN);
+        return Components.ColoredText("Brittle", ChatFormatting.GREEN);
+        // return Component.literal("Brittle").withStyle(ChatFormatting.GREEN);
     }
 
     @Override
     public MutableComponent shiftTooltip(ItemStack stack) {
-        return Component.literal("Takes extra damage than normal, when breaking blocks").withStyle(ChatFormatting.AQUA);
+        return Components.ColoredText("Takes extra damage than normal, when breaking blocks", ChatFormatting.AQUA);
+        // return Component.literal("Takes extra damage than normal, when breaking blocks").withStyle(ChatFormatting.AQUA);
     }
 
     @Override

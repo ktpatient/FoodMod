@@ -9,10 +9,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.Random;
 
 public abstract class BooleanModifier implements Modifiers{
-    @Override
-    public String getName() {
-        return "";
-    }
 
     @Override
     public void onMine(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity, Random random) {

@@ -11,7 +11,7 @@ public class BlockVoxelShapes {
     public static final VoxelShape POT_BLOCK_SHAPE = makePotShape();
     public static final VoxelShape CHOPPING_BOARD_SHAPE = makeChoppingBoardShape();
     public static final VoxelShape BERRY_BUSH_SHAPE = makeBerryShape();
-
+    public static final VoxelShape PEDESTAL_SHAPE = makePedestal();
 
     private static VoxelShape makeBerryShape(){
         VoxelShape shape = Shapes.empty();
@@ -71,5 +71,15 @@ public class BlockVoxelShapes {
 
         return shape;
     }
+    private static VoxelShape makePedestal(){
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.join(shape, Shapes.box(0.0625, 0, 0.0625, 0.9375, 0.125, 0.9375), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.375, 0.0625, 0.375, 0.625, 0.625, 0.625), BooleanOp.OR);
+        //shape = Shapes.join(shape, Shapes.box(0.4375, 0.5625, 0.5625, 0.5625, 0.75, 0.6875), BooleanOp.OR);
+        //shape = Shapes.join(shape, Shapes.box(0.4375, 0.5625, 0.2500000000000009, 0.5625, 0.6875, 0.4375000000000009), BooleanOp.OR);
+        //shape = Shapes.join(shape, Shapes.box(0.625, 0.53125, 0.4375, 0.8125, 0.65625, 0.5625), BooleanOp.OR);
+        //shape = Shapes.join(shape, Shapes.box(0.3750000000000009, 0.53125, 0.4375, 0.5000000000000009, 0.71875, 0.5625), BooleanOp.OR);
 
+        return shape;
+    }
 }

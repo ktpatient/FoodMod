@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Random;
 
-public class LeveledModifier implements Modifiers{
+public abstract class LeveledModifier implements Modifiers{
 
     public LeveledModifier(int level) {
         this.level = level;
@@ -22,10 +22,6 @@ public class LeveledModifier implements Modifiers{
     public Modifiers setLevel(int value){
         this.level = value;
         return this;
-    }
-    @Override
-    public String getName() {
-        return "";
     }
 
     @Override

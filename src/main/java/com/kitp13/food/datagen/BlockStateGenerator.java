@@ -6,10 +6,12 @@ import com.kitp13.food.library.blocks.crops.BaseCropBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Function;
 
@@ -22,6 +24,7 @@ public class BlockStateGenerator extends BlockStateProvider {
     protected void registerStatesAndModels() {
         makeCrop((BaseCropBlock) ModBlocks.TOMATO_CROP_BLOCK.get(),"tomato_crop","tomato_stage");
         makeCrossCrop((BaseCropBlock) ModBlocks.PINEAPPLE_CROP_BLOCK.get(), "pineapple_crop", "pineapple_stage");
+        blockWithItem(ModBlocks.TILES);
     }
 
     private void makeCrop(BaseCropBlock block, String modelName, String textureName){
@@ -59,5 +62,8 @@ public class BlockStateGenerator extends BlockStateProvider {
         models[0] = new ConfiguredModel(models().crop(modelName+state.getValue(block.getAgeProperty()),
                 new ResourceLocation(Main.MODID, "block/"+textureName+state.getValue(block.getAgeProperty()))).renderType("cutout"));
         return models;
+    }
+    private void blockWithItem(RegistryObject<Block> blockRegistryObject) {
+        simpleBlockWithItem(blockRegistryObject.get(), cubeAll(blockRegistryObject.get()));
     }
 }

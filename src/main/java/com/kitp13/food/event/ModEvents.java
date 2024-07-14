@@ -1,12 +1,17 @@
 package com.kitp13.food.event;
 
 import com.kitp13.food.Main;
+import com.kitp13.food.ModCommands;
 import com.kitp13.food.items.ModItems;
 import com.kitp13.food.items.tools.Paxel;
 import com.kitp13.food.items.tools.ToolCapabilities;
-import com.kitp13.food.items.tools.modifiers.*;
+import com.kitp13.food.items.tools.modifiers.BooleanModifier;
+import com.kitp13.food.items.tools.modifiers.LeveledModifier;
+import com.kitp13.food.items.tools.modifiers.Modifiers;
+import com.kitp13.food.items.tools.modifiers.ModifiersRegistry;
 import com.kitp13.food.library.ItemUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
@@ -15,6 +20,7 @@ import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
@@ -26,6 +32,11 @@ import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = Main.MODID)
 public class ModEvents {
+    @SubscribeEvent
+    public static void onRegisterCommands(RegisterCommandsEvent event) {
+        CommandBuildContext context = event.getBuildContext();
+        ModCommands.register(event.getDispatcher(), context);
+    }
     @SubscribeEvent
     public static void villagerTrades(VillagerTradesEvent event){
         if (event.getType() == VillagerProfession.FARMER){
