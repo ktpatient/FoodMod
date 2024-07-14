@@ -18,6 +18,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 
 import java.util.Objects;
@@ -48,7 +49,7 @@ public class PedestalBlockRenderer implements BlockEntityRenderer<PedestalBlockE
                     OverlayTexture.NO_OVERLAY, poseStack, multiBufferSource, pedestalBlockEntity.getLevel(), 1);
             poseStack.popPose();
             if (minecraft.options.keyShift.isDown()) {
-                renderLabel(poseStack,multiBufferSource,i,new double[] { 0.05D, 0.65D, 0.05D },requiredItem.getDisplayName(),0xffffff);
+                renderLabel(pedestalBlockEntity,poseStack,multiBufferSource,i,new float[] { 0.5f, 1.1f, 0.5f },requiredItem.getDisplayName(),0xffffff,partialTicks);
             }
         }
     }
@@ -57,28 +58,43 @@ public class PedestalBlockRenderer implements BlockEntityRenderer<PedestalBlockE
         int sLight = level.getBrightness(LightLayer.SKY, pos);
         return LightTexture.pack(bLight, sLight);
     }
-    private void renderLabel(PoseStack matrixStack, MultiBufferSource buffer, int lightLevel, double[] corner, Component text, int color) {
+    private void renderLabel(PedestalBlockEntity e,PoseStack matrixStack, MultiBufferSource buffer, int lightLevel, float[] corner, Component text, int color, float partialTicks) {
         Font fontRenderer = minecraft.font;
         LocalPlayer player = minecraft.player;
         if (player == null)
             return;
 
         matrixStack.pushPose();
-        float scale = 0.01F;
-        int opacity = 1711276032;
 
-        matrixStack.translate(corner[0], corner[1] + 0.25D, corner[2]);
-        matrixStack.scale(scale, -scale, scale);
-        matrixStack.mulPose(Axis.YP.rotationDegrees(180.0F));
+        double angle = Math.toDegrees(angleBetweenXZ(e.getBlockPos().getCenter(), player.position()));
+
+        matrixStack.translate(corner[0], corner[1], corner[2]);
+        matrixStack.mulPose(Axis.YP.rotationDegrees((float) angle));
+        matrixStack.scale(0.02F, -0.02F, 0.02F);
+        float offset = -fontRenderer.width(text) / 2.0F;
         Matrix4f matrix4f = matrixStack.last().pose();
-
-
-        float offset = (-fontRenderer.width(text) / 2.0F);
-        matrixStack.mulPose(Axis.YP.rotationDegrees(180.0F));
-        fontRenderer.drawInBatch(text, offset, 0.0F, color, false, matrix4f, buffer, Font.DisplayMode.NORMAL, opacity, lightLevel);
-
+        fontRenderer.drawInBatch(text, offset, 0.0F, color, false, matrix4f, buffer, Font.DisplayMode.NORMAL, 1711276032, lightLevel);
 
         matrixStack.popPose();
+    }
+
+    public static double angleBetweenXZ(Vec3 vec1, Vec3 vec2) {
+        double x1 = vec1.x();
+        double z1 = vec1.z();
+        double x2 = vec2.x();
+        double z2 = vec2.z();
+
+        double dotProduct = x1 * x2 + z1 * z2;
+        double magnitude1 = Math.sqrt(x1 * x1 + z1 * z1);
+        double magnitude2 = Math.sqrt(x2 * x2 + z2 * z2);
+
+        double cosine = dotProduct / (magnitude1 * magnitude2);
+
+        double angleRad = Math.acos(cosine);
+
+        double angleDeg = Math.toDegrees(angleRad);
+
+        return angleDeg;
     }
 
 }
