@@ -1,7 +1,6 @@
 package com.kitp13.food;
 
 import com.kitp13.food.blocks.ModBlocks;
-import com.kitp13.food.entity.blocks.PedestalBlockEntity;
 import com.kitp13.food.entity.blocks.renderer.ChoppingBoardRenderer;
 import com.kitp13.food.entity.blocks.renderer.PedestalBlockRenderer;
 import com.kitp13.food.entity.blocks.renderer.PotBlockRenderer;
@@ -37,6 +36,7 @@ public class Main {
     }
     private void setupClient(final FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
+            // Minecraft.getInstance().getItemColors().register(new ToolItemColor(), ModItems.FORK.get());
         });
     }
     private void renderEvent(EntityRenderersEvent.RegisterRenderers event){

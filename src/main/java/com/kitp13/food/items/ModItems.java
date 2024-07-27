@@ -6,6 +6,7 @@ import com.kitp13.food.items.tea.CactusTea;
 import com.kitp13.food.items.tea.EffectTea;
 import com.kitp13.food.items.tea.RoseTea;
 import com.kitp13.food.items.tea.SugarCaneTea;
+import com.kitp13.food.items.tools.Fork;
 import com.kitp13.food.items.tools.Paxel;
 import com.kitp13.food.items.tools.Tiers;
 import com.kitp13.food.library.items.FoodItem;
@@ -45,6 +46,10 @@ public class ModItems {
         public static RegistryObject<Item> MODIFIER_VAMPIRIC;
         public static RegistryObject<Item> MODIFIER_EXP;
         public static RegistryObject<Item> PAXEL_REPAIR;
+
+    public static RegistryObject<Item> FORK_HEAD = ITEMS.register("fork_head", ()->new Item(new Item.Properties()));
+    public static RegistryObject<Item> FORK_HANDLE = ITEMS.register("handle", ()->new Item(new Item.Properties()));
+    public static RegistryObject<Item> FORK = ITEMS.register("fork", ()->new Fork(new Item.Properties()));
 
     public static RegistryObject<Item> CACTUS_TEA = ITEMS.register("cactus_tea", ()-> new CactusTea(new Item.Properties()));
     public static RegistryObject<Item> ROSE_TEA = ITEMS.register("rose_tea", ()->new RoseTea(new Item.Properties()));

@@ -31,7 +31,7 @@ public class ModCommands {
                                                             if (blockEntity instanceof PedestalBlockEntity customBlockEntity) {
                                                                 customBlockEntity.setRequiredItem(requiredItem);
                                                                 customBlockEntity.setRewardItem(rewardItem);
-                                                                customBlockEntity.setItemsSubmitted(true); // Automatically set itemsSubmitted to true
+                                                                customBlockEntity.setItemsSubmitted(false);
                                                                 ctx.getSource().sendSuccess(()->Components.ColoredText("Set required and reward items successfully.",ChatFormatting.AQUA), true);
                                                                 return 1;
                                                             }

@@ -3,6 +3,8 @@ package com.kitp13.food.event;
 import com.kitp13.food.Main;
 import com.kitp13.food.ModCommands;
 import com.kitp13.food.items.ModItems;
+import com.kitp13.food.items.ToolItemColor;
+import com.kitp13.food.items.tools.Fork;
 import com.kitp13.food.items.tools.Paxel;
 import com.kitp13.food.items.tools.ToolCapabilities;
 import com.kitp13.food.items.tools.modifiers.BooleanModifier;
@@ -19,6 +21,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -32,6 +35,27 @@ import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = Main.MODID)
 public class ModEvents {
+    public static int convertStringToInt(String input) {
+        if (input == null || input.isEmpty()) {
+            return 1;
+        }
+
+        try {
+            return Integer.parseInt(input);
+        } catch (NumberFormatException e1) {
+            try {
+                if (input.startsWith("0x") || input.startsWith("0X")) {
+                    return Integer.parseInt(input.substring(2), 16);
+                }
+                if (input.startsWith("-0x") || input.startsWith("-0X")) {
+                    return Integer.parseInt(input.substring(3), 16) * -1;
+                }
+            } catch (NumberFormatException e2) {
+                return 1;
+            }
+        }
+        return 1;
+    }
     @SubscribeEvent
     public static void onRegisterCommands(RegisterCommandsEvent event) {
         CommandBuildContext context = event.getBuildContext();
@@ -79,6 +103,22 @@ public class ModEvents {
     public static void onAnvilUpdate(AnvilUpdateEvent event) {
         ItemStack leftStack = event.getLeft();
         ItemStack rightStack = event.getRight();
+
+        if (leftStack.getItem() instanceof Fork fork){
+            ItemStack copy = leftStack.copy();
+            Fork.setCol(copy, convertStringToInt(event.getName()));
+            event.setOutput(copy);
+            event.setCost(1);
+            event.setMaterialCost(1);
+        }
+
+        if (leftStack.getItem().equals(ModItems.FORK_HANDLE.get()) && rightStack.getItem().equals(ModItems.FORK_HEAD.get())) {
+            event.setOutput(new ItemStack(ModItems.FORK.get()));
+            event.setCost(1);
+            event.setMaterialCost(1);
+        }
+
+
         if (!(leftStack.getItem() instanceof Paxel)) {
             return;
         }
@@ -167,4 +207,5 @@ public class ModEvents {
             event.setMaterialCost(1);
         }
     }
+
 }

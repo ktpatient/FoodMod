@@ -6,14 +6,18 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,25 +39,61 @@ public class PedestalBlockEntity extends BlockEntity implements SyncableBlockEnt
 
         if (requiredItem.isEmpty() || rewardItem.isEmpty() || itemsSubmitted) return;
 
-        AABB aabb = new AABB(this.worldPosition).inflate(1.0);
-        List<ItemEntity> items = this.level.getEntitiesOfClass(ItemEntity.class, aabb, item -> ItemStack.isSameItemSameTags(item.getItem(), requiredItem));
+        Item requiredItem = this.requiredItem.getItem();
+        int requiredCount = this.requiredItem.getCount();
 
-        if (items.size() >= requiredItem.getCount()) {
-            for (int i = 0; i < requiredItem.getCount(); i++) {
-                items.get(i).discard();
-            }
+        int totalFound = 0;
+        List<ItemEntity> itemsToConsume = new ArrayList<>();
+        AABB aabb = new AABB(worldPosition).inflate(2.0);
+        List<ItemEntity> itemEntities = level.getEntitiesOfClass(ItemEntity.class, aabb);
 
-            Player player = this.level.getNearestPlayer(this.worldPosition.getX(), this.worldPosition.getY(), this.worldPosition.getZ(), 10, false);
-            if (player != null && !rewardItem.isEmpty()) {
-                setItemsSubmitted(true);
-                ItemStack reward = rewardItem.copy();
-                if (!player.getInventory().add(reward)) {
-                    ItemEntity itemEntity = new ItemEntity(this.level, player.getX(), player.getY(), player.getZ(), reward);
-                    this.level.addFreshEntity(itemEntity);
+        for (ItemEntity itemEntity : itemEntities) {
+            ItemStack stack = itemEntity.getItem();
+
+            if (stack.getItem() == requiredItem) {
+                totalFound += stack.getCount();
+                itemsToConsume.add(itemEntity);
+
+                if (totalFound >= requiredCount) {
+                    break;
                 }
             }
         }
+
+        if (totalFound >= requiredCount) {
+            int remaining = requiredCount;
+
+            for (ItemEntity itemEntity : itemsToConsume) {
+                ItemStack stack = itemEntity.getItem();
+                int toRemove = Math.min(stack.getCount(), remaining);
+
+                stack.shrink(toRemove);
+                remaining -= toRemove;
+
+                if (stack.isEmpty()) {
+                    itemEntity.remove(Entity.RemovalReason.DISCARDED);
+                }
+
+                if (remaining <= 0) {
+                    break;
+                }
+            }
+
+            itemsSubmitted = true;
+            triggerReward();
+            setChanged();
+            sync();
+        }
     }
+
+    private void triggerReward() {
+        if (rewardItem != null && rewardItem.getCount() > 0) {
+            ItemStack rewardStack = rewardItem.copy();
+            ItemEntity rewardEntity = new ItemEntity((ServerLevel) level, worldPosition.getX() + 0.5, worldPosition.getY() + 1.0, worldPosition.getZ() + 0.5, rewardStack);
+            level.addFreshEntity(rewardEntity);
+        }
+    }
+
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
@@ -113,7 +153,7 @@ public class PedestalBlockEntity extends BlockEntity implements SyncableBlockEnt
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
+    public @NotNull CompoundTag getUpdateTag() {
         return writeSyncTag();
     }
     @Override
@@ -130,5 +170,6 @@ public class PedestalBlockEntity extends BlockEntity implements SyncableBlockEnt
     public void setItemsSubmitted(boolean submitted) {
         this.itemsSubmitted = submitted;
         setChanged();
+        sync();
     }
 }

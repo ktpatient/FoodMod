@@ -82,6 +82,9 @@ public class ItemModelGenerator extends ItemModelProvider {
         generateItemModel("sugar_cane_tea");
         generateItemModel("tea");
         generateItemModel("water_tea");
+        generateItemModel("fork_head");
+        generateItemModel("handle");
+        generateItemModel("fork");
     }
     private void generateItemModel(String name){
         generateItemModel(name,name);
